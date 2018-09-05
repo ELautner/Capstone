@@ -1,0 +1,329 @@
+
+-- Version 1.0
+-- Last Updated: 22 April 2018
+
+-- Drop Tables
+DROP TABLE if exists SurveyAnswer;
+DROP TABLE if exists PossibleAnswer;
+DROP TABLE if exists SurveyQuestion;
+DROP TABLE if exists Survey;
+DROP TABLE if exists Gender;
+DROP TABLE if exists AgeGroup;
+DROP TABLE if exists Unit;
+DROP TABLE if exists RespondentType;
+DROP TABLE if exists CareSiteAccess;
+DROP TABLE if exists CareSite;
+DROP TABLE if exists AccessCode;
+
+-- AccessCode
+-- The AccessCode database entity stores a list of pre-approved words that can be used as survey access codes for any care site in the database.
+CREATE TABLE AccessCode (
+    
+	AccessCodeID SERIAL -- SERIAL = AutoIncrement
+    	PRIMARY KEY,
+
+	AccessCodeWord	varchar(8) NOT NULL
+    	CONSTRAINT ck_CodeLength CHECK (char_length(AccessCodeWord) BETWEEN 6 AND 8), -- Between 6 and 8 characters inclusive
+
+	ActiveYN boolean NOT NULL
+    	DEFAULT true -- Assigned a default value of true
+
+);
+
+-- CareSite
+-- The CareSite database entity stores all hospitals or care sites where the MSS is being used.
+CREATE TABLE CareSite (
+    
+	CareSiteID SERIAL -- SERIAL = AutoIncremet
+    	PRIMARY KEY,
+
+	CareSiteName  varchar(80) NOT NULL
+    	CONSTRAINT ck_CareSiteNameLength CHECK (char_length(CareSiteName) >= 5), -- Must be 5 characters or more
+
+	Address varchar(40) NOT NULL,
+
+	City varchar(30) NOT NULL,
+
+	Province char(2) NOT NULL -- Will use postal abrevations (ex. AB = Alberta)
+	CONSTRAINT ck_ProvinceFormat check (Province SIMILAR TO '[A-Z][A-Z]'), --Must be 2 uppercase letters, 
+    
+	ActiveYN boolean NOT NULL
+    	DEFAULT true -- Assigned a default value of true
+
+);
+
+
+-- CareSiteAccess
+-- The CareSiteAccess database entity stores the date that an access code is assigned and the care site the access code is being used for.
+CREATE TABLE CareSiteAccess (
+    
+	AccessCodeID int NOT NULL
+    	REFERENCES AccessCode(AccessCodeID), -- Creates foreign key relationship
+
+	CareSiteID int NOT NULL
+    	REFERENCES CareSite(CareSiteID), -- Creates foreign key relationship
+
+	DateUsed timestamp NOT NULL
+    	DEFAULT date_trunc('day', CURRENT_TIMESTAMP)  -- Defualt of the current date and time
+    	CONSTRAINT ck_DateUsedCheck CHECK (DateUsed >= date_trunc('day', CURRENT_TIMESTAMP)), -- Must be a current or future date
+    
+	PRIMARY KEY (AccessCodeID, CareSiteID)
+
+);
+
+
+-- RespondentType
+-- The RespondentType database entity
+-- stores the different roles that a survey respondent can
+-- pick from on the survey form.
+CREATE TABLE RespondentType (
+
+	RespondentTypeID SERIAL  -- SERIAL = AutoIncremet
+    	PRIMARY KEY,
+    
+	RespondentTypeName varchar(15) NOT NULL,
+    
+	ActiveYN boolean NOT NULL
+    	DEFAULT true -- Assigned a default value of true
+
+);
+
+-- AgeGroup
+-- The AgeGroup database entity
+-- Stores the different age ranges that a survey respondent can
+-- pick from on the survey form.
+CREATE TABLE AgeGroup (
+
+	AgeGroupID int
+	PRIMARY KEY,
+
+	AgeGroupName varchar(20) NOT NULL,
+
+	ActiveYN boolean NOT NULL
+    	DEFAULT true -- Assigned a default value of true
+);
+
+-- Gender
+-- The Gender database entity
+-- Stores the different age ranges that a survey respondent can
+-- pick from on the survey form.
+CREATE TABLE Gender (
+
+	GenderID int
+	PRIMARY KEY,
+
+	GenderName varchar(20) NOT NULL,
+
+	ActiveYN boolean NOT NULL
+    	DEFAULT true -- Assigned a default value of true
+);
+
+-- Unit
+-- The Unit database entity stores all units belonging to a CareSite.
+CREATE TABLE Unit (
+    
+	UnitID SERIAL  -- SERIAL = AutoIncremet
+    	PRIMARY KEY,
+
+	UnitName varchar(60) NOT NULL,
+    
+	ActiveYN boolean NOT NULL
+    	DEFAULT true, -- Assigned a default value of true
+   	 
+	CareSiteID int NOT NULL
+    	REFERENCES CareSite(CareSiteID)
+);
+
+-- Survey
+-- The Survey database entity stores general data collected from Survey Respondents via the survey form.
+CREATE TABLE Survey
+(
+    
+	SurveyID SERIAL -- SERIAL = AutoIncremet
+    	PRIMARY KEY,
+
+	Date timestamp NOT NULL
+    	DEFAULT date_trunc('day', CURRENT_TIMESTAMP), -- Defaults to current date
+
+	FirstName varchar(40)  NULL,
+
+	BedNumber varchar(10) NULL,
+    
+	PhoneNumber varchar(14) NULL
+    	CONSTRAINT ck_PhoneNumber CHECK (PhoneNumber SIMILAR TO '(1-[1-9][0-9][0-9]|[1-9][0-9][0-9])-[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'),  -- First digit of area code cannot be 0, must have 10 digits and 2 dashes.
+
+	PreferredContact varchar(40) NULL,
+
+	ContactedYN boolean NULL
+    	DEFAULT false, -- assign a default value of false
+
+	AgeGroupID int NOT NULL
+	REFERENCES AgeGroup(AgeGroupID),
+
+	GenderID int NOT NULL
+	REFERENCES Gender(GenderID),
+
+	RespondentTypeID int NOT NULL
+    	REFERENCES RespondentType(RespondentTypeID),
+
+	UnitID int NOT NULL
+    	REFERENCES Unit(UnitID)
+
+);
+
+-- SurveyQuestion
+-- The SurveyQuestion database entity stores all questions on the survey.
+CREATE TABLE SurveyQuestion (
+    
+	SurveyQuestionID SERIAL -- SERIAL = AutoIncremet
+    	PRIMARY KEY,
+    
+	Question varchar(250) NOT NULL,
+    
+	QuestionType varchar(20) NOT NULL	 
+    	CONSTRAINT ck_QuestionType CHECK (QuestionType = 'Written' OR QuestionType ='MultipleChoice'), -- Has to be ‘Multiple Choice’ or ‘Written’.
+    
+	ActiveYN boolean NOT NULL
+    	DEFAULT true -- Assigned a default value of true
+    
+);
+
+-- PossibleAnswer
+-- The PossibleAnswer database entity stores the different options that serve as answers for a question.
+CREATE TABLE PossibleAnswer (
+    
+	PossibleAnswerID int
+    	PRIMARY KEY,
+    
+	PossibleAnswerText varchar(250),
+    
+	ActiveYN boolean NOT NULL
+    	DEFAULT true, -- Assigned a default value of true
+    
+	SurveyQuestionID int NOT NULL
+    	REFERENCES SurveyQuestion(SurveyQuestionID)
+);
+
+-- SurveyAnswer
+-- The SurveyAnswer database entity stores all received answers from received surveys.
+CREATE TABLE SurveyAnswer
+(
+	SurveyID int NOT NULL
+    	REFERENCES Survey(SurveyID),
+    
+	PossibleAnswerID int NOT NULL
+    	REFERENCES PossibleAnswer(PossibleAnswerID),
+    
+	HistoricalQuestion  varchar(250) NOT NULL,
+    
+	Answer varchar(250) NULL,
+    
+	PRIMARY KEY (SurveyID, PossibleAnswerID)
+
+);
+
+
+-- NOTE:
+-- The SQL script has been taken from: http://www.sirchristian.net/blog/2015/02/24/using-postgresql-with-asp-net-mvc-simplemembership/
+-- The SQL script has also been modified from the original
+
+
+CREATE SCHEMA IF NOT EXISTS dbo;
+
+DROP TABLE if exists dbo."AspNetUserRoles";
+Drop table if exists dbo."AspNetUserClaims";
+Drop table if exists dbo."AspNetRoles";
+Drop table if exists dbo."AspNetUserLogins";
+Drop table if exists dbo."AspNetUsers";
+
+
+	CREATE TABLE IF NOT EXISTS dbo."AspNetUsers" (
+    	"Id"               	VARCHAR   NOT NULL,
+    	"Email"            	VARCHAR   NOT NULL,
+    	"EmailConfirmed"   	BOOLEAN   NOT NULL,
+    	"PasswordHash"     	VARCHAR   NULL,
+    	"SecurityStamp"    	VARCHAR   NULL,
+		FirstName varchar(40) NOT NULL,
+    	LastName varchar(40) NOT NULL,
+    	ActiveYN boolean NOT NULL
+        DEFAULT true, -- Assigned a default value of true
+    	CareSiteID int NULL,
+    	"PhoneNumber"      	VARCHAR   NULL,
+    	"PhoneNumberConfirmed" BOOLEAN   NOT NULL,
+    	"TwoFactorEnabled" 	BOOLEAN   NOT NULL,
+    	"LockoutEndDateUtc"	TIMESTAMP NULL,
+    	"LockoutEnabled"   	BOOLEAN   NOT NULL,
+    	"AccessFailedCount"	INT   	NOT NULL,
+    	"UserName"         	VARCHAR   NOT NULL,
+    	CONSTRAINT PK_AspNetUsers PRIMARY KEY ("Id"),
+    	CONSTRAINT UQ_AspNetUsers UNIQUE ("UserName")
+	);
+
+	CREATE TABLE IF NOT EXISTS dbo."AspNetUserLogins" (
+    	"LoginProvider" VARCHAR NOT NULL,
+    	"ProviderKey"   VARCHAR NOT NULL,
+    	"UserId"    	VARCHAR NOT NULL,
+    	CONSTRAINT PK_AspNetUserLogins PRIMARY KEY ("LoginProvider", "ProviderKey", "UserId"),
+    	FOREIGN KEY ("UserId") REFERENCES dbo."AspNetUsers" ("Id") ON DELETE CASCADE
+	);
+
+	DO $$
+    	BEGIN
+        	CREATE INDEX IX_AspNetUserLogins_UserId ON dbo."AspNetUserLogins" ("UserId");
+    	EXCEPTION
+        	WHEN others THEN RAISE NOTICE 'Could not add IX_AspNetUserLogins_UserId. Does it already exist?';
+    	END
+	$$;
+
+
+	CREATE TABLE IF NOT EXISTS dbo."AspNetRoles" (
+    	"Id"   VARCHAR NOT NULL,
+    	"Name" VARCHAR NOT NULL,
+		AuthorizationLevelDescription varchar(150) NOT NULL,
+   	ActiveYN boolean NOT NULL
+        DEFAULT true, -- Assigned a default value of true
+	CONSTRAINT PK_AspNetRoles  PRIMARY KEY ("Id"),
+	CONSTRAINT UQ_RoleName UNIQUE ("Name")
+	);
+
+	CREATE TABLE IF NOT EXISTS dbo."AspNetUserClaims" (
+    	"Id"     	SERIAL,
+    	"UserId" 	VARCHAR NOT NULL,
+    	"ClaimType"  VARCHAR NULL,
+    	"ClaimValue" VARCHAR NULL,
+    	CONSTRAINT PK_AspNetUserClaims PRIMARY KEY ("Id"),
+    	FOREIGN KEY ("UserId") REFERENCES dbo."AspNetUsers"("Id") ON DELETE CASCADE
+	);
+
+	DO $$
+    	BEGIN
+        	CREATE INDEX IX_AspNetUserClaims_UserId ON dbo."AspNetUserClaims" ("UserId");
+    	EXCEPTION
+        	WHEN others THEN RAISE NOTICE 'Could not add IX_AspNetUserClaims_UserId. Does it already exist?';
+    	END
+	$$;
+
+	CREATE TABLE IF NOT EXISTS dbo."AspNetUserRoles" (
+    	"UserId" VARCHAR NOT NULL,
+    	"RoleId" VARCHAR NOT NULL,
+    	CONSTRAINT PK_AspNetUserRoles PRIMARY KEY ("UserId", "RoleId"),
+    	FOREIGN KEY ("RoleId") REFERENCES dbo."AspNetRoles"("Id") ON DELETE CASCADE,
+    	FOREIGN KEY ("UserId") REFERENCES dbo."AspNetUsers"("Id") ON DELETE CASCADE
+	);
+
+	DO $$
+    	BEGIN
+        	CREATE INDEX IX_AspNetUserRoles_UserId ON dbo."AspNetUserRoles"("UserId");
+    	EXCEPTION
+        	WHEN others THEN RAISE NOTICE 'Could not add IX_AspNetUserRoles_UserId. Does it already exist?';
+    	END
+	$$;
+
+
+	DO $$
+    	BEGIN
+        	CREATE INDEX IX_AspNetUserRoles_RoleId ON dbo."AspNetUserRoles"("RoleId");
+    	EXCEPTION
+        	WHEN others THEN RAISE NOTICE 'Could not add IX_AspNetUserRoles_RoleId. Does it already exist?';
+    	END
+	$$;

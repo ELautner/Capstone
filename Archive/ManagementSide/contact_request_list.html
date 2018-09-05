@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<!-- Basic Page Needs
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta charset="utf-8">
+	<title>Meal Satisfaction Survey</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+
+	<!-- Boostrap ––––––––––––––––––––––––––––––––––––––– Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<!-- Need these for dropdowns in nav, amoung other things -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<!-- Fontawesome –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+	<!-- CSS –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<!-- <link rel="stylesheet" type="text/css" href="css/skeleton.css"> -->
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+
+	<!-- Favicon –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="icon" type="image/png" href="img/favicon.png">
+
+</head>
+<body>
+	
+	<header>
+		<nav>
+			<ul>
+				<li><a href="dashboard.html"><img src="img/chLogo_transparent_icon.png" alt="Covenant Health Logo">Covenant Health Meal Satisfaction System</a></li>
+				<li><a href="reporting.html">Reports</a></li>
+				<li>Surveys <i class="fas fa-angle-down"></i>
+					<ul>
+						<li><a href="access_codes.html">View Survey Access Codes</a></li>
+						<li><a href="view_surveys.html">View Surveys</a></li>
+						<li><a href="contact_request_list.html">View Contact Requests</a></li>
+					</ul>
+				</li>
+				<li>Administration <i class="fas fa-angle-down"></i>
+					<ul>
+						<li><a href="add_account.html">Create Account</a></li>
+						<li><a href="search_account.html">Update or Delete Account</a></li>
+						<li><a href="manage_units.html">Manage Unit Lists</a></li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="stick-right">
+				<li>Welcome Linda! <i class="fas fa-user"></i> <i class="fas fa-angle-down"></i>
+					<ul>
+						<li><a href="my_account.html">My Account</a></li>
+						<li class="separate-top"><a href="index.html">Log Out</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</header>
+	
+	<main>
+		<h2>View Contact Requests</h2>
+		<!-- <div class="alert alert-warning" role="alert">
+			This page is currently under construction <i class="fas fa-wrench"></i> <i class="fas fa-paper-plane"></i>
+		</div> -->
+		<form>
+			<div class="form-group row">
+				<label for="careSite" class="col-sm-2 col-form-label right-text">Care Site</label>
+				<div class="col-sm-4">
+					<select class="form-control">
+						<option value="none">All Care Sites</option>
+						<option value="mis">Misericordia Community Hospital</option>
+						<option value="2">Another Hospital</option>
+						<option value="3">One More Hospital</option>
+					</select>
+				</div>
+				<a href="#" class="button-info col-sm-2">Retrieve Unit List</a>
+			</div>
+
+			<div class="form-group row">
+				<label for="careSite" class="col-sm-2 col-form-label right-text">Unit</label>
+				<div class="col-sm-2">
+					<select class="form-control">
+						<option value="none">All Units</option>
+						<option value="8E">8 East</option>
+						<option value="7E">7 East</option>
+						<option value="7W">7 West</option>
+						<option value="6E">6 East</option>
+						<option value="6W">6 West</option>
+						<option value="5E">5 East</option>
+						<option value="5W">5 West</option>
+						<option value="3E">3 East</option>
+						<option value="3N">3 North</option>
+						<option value="ED">ED</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="date" class="col-sm-2 col-form-label right-text">Date Range</label>
+				<div class="col-sm-3">
+					<input id="dateStart" name="dateStart" class="form-control" type="date">
+				</div>
+				to
+				<div class="col-sm-3">
+					<input id="dateEnd" name="dateEnd" class="form-control" type="date">
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="careSite" class="col-sm-2 col-form-label right-text">Gender</label>
+				<div class="col-sm-3">
+					<select class="form-control">
+						<option value="none">All Genders</option>
+						<option value="1e">Female</option>
+						<option value="1n">Male</option>
+						<option value="1w">Prefer not to answer</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="careSite" class="col-sm-2 col-form-label right-text">Age Range</label>
+				<div class="col-sm-3">
+					<select class="form-control">
+						<option value="none">Any Age</option>
+						<option value="1e">0 - 24 years old</option>
+						<option value="1e">25 - 44 years old</option>
+						<option value="1e">45 - 64 years old</option>
+						<option value="1e">65+ years old</option>
+						<option value="1e">Prefer not to answer</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="completed" class="col-sm-2 col-form-label right-text">Status</label>
+				<div class="col-sm-3">
+					<select class="form-control">
+						<option value="none">Any Status</option>
+						<option value="1e">Not Processed</option>
+						<option value="1e">Processed</option>
+					</select>
+				</div>
+			</div>
+
+
+			<div class="form-group row justify-content-center">
+				<a href="#" class="button-secondary">Retrieve Contact Requests</a>
+			</div>
+		</form>
+
+		<h3>Results: 12 Contact Requests</h3>
+		<table class="table table-striped contact-req">
+			<tr>
+				<th>Processed</th>
+				<th>Survey ID</th>
+				<th>Site</th>
+				<th>Unit</th>
+				<th>Date</th>
+				<th>Contact Method</th>
+				<th>Name</th>
+				<th></th>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="" checked="checked" disabled></td>
+				<td>1</td>
+				<td>Misericordia</td>
+				<td>8 East</td>
+				<td>01/JAN/2018</td>
+				<td>In Person</td>
+				<td>Jane Doe</td>
+				<td><a href="survey_details.html">view survey</a></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="" checked="checked" disabled></td>
+				<td>2</td>
+				<td>Misericordia</td>
+				<td>8 East</td>
+				<td>01/JAN/2018</td>
+				<td>Over the Phone</td>
+				<td>Jane Doe</td>
+				<td><a href="survey_details.html">view survey</a></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="" disabled></td>
+				<td>3</td>
+				<td>Misericordia</td>
+				<td>8 East</td>
+				<td>01/JAN/2018</td>
+				<td>In Person</td>
+				<td>Jane Doe</td>
+				<td><a href="survey_details.html">view survey</a></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="" disabled></td>
+				<td>4</td>
+				<td>Misericordia</td>
+				<td>8 East</td>
+				<td>01/JAN/2018</td>
+				<td>Over the Phone</td>
+				<td>Jane Doe</td>
+				<td><a href="survey_details.html">view survey</a></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="" checked="checked" disabled></td>
+				<td>5</td>
+				<td>Misericordia</td>
+				<td>8 East</td>
+				<td>01/JAN/2018</td>
+				<td>Over the Phone</td>
+				<td>Jane Doe</td>
+				<td><a href="survey_details.html">view survey</a></td>
+			</tr>
+		</table>
+	</main>
+
+	<footer>
+		<p>&copy; Covenant Health 2018</p>
+	</footer>
+</body>
+</html>
+

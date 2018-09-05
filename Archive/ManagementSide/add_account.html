@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<!-- Basic Page Needs
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta charset="utf-8">
+	<title>Meal Satisfaction Survey</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+
+	<!-- Boostrap ––––––––––––––––––––––––––––––––––––––– Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<!-- Need these for dropdowns in nav, amoung other things -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<!-- Fontawesome –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+	<!-- CSS –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+
+	<!-- Favicon –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="icon" type="image/png" href="img/favicon.png">
+
+</head>
+<body>
+	
+	<header>
+		<nav>
+			<ul>
+				<li><a href="dashboard.html"><img src="img/chLogo_transparent_icon.png" alt="Covenant Health Logo">Covenant Health Meal Satisfaction System</a></li>
+				<li><a href="reporting.html">Reports</a></li>
+				<li>Surveys <i class="fas fa-angle-down"></i>
+					<ul>
+						<li><a href="access_codes.html">View Survey Access Codes</a></li>
+						<li><a href="view_surveys.html">View Surveys</a></li>
+						<li><a href="contact_request_list.html">View Contact Requests</a></li>
+					</ul>
+				</li>
+				<li>Administration <i class="fas fa-angle-down"></i>
+					<ul>
+						<li><a href="add_account.html">Create Account</a></li>
+						<li><a href="search_account.html">Update or Delete Account</a></li>
+						<li><a href="manage_units.html">Manage Unit Lists</a></li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="stick-right">
+				<li>Welcome Linda! <i class="fas fa-user"></i> <i class="fas fa-angle-down"></i>
+					<ul>
+						<li><a href="my_account.html">My Account</a></li>
+						<li class="separate-top"><a href="index.html">Log Out</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</header>
+
+	<main>
+		<h2>Create a New Management Account</h2>
+		<!-- msg here -->
+		<form class="account-form">
+			<div class="form-group row">
+				<label for="fname" class="col-sm-4 col-form-label right-text">First Name</label>
+				<div class="col-sm-8">
+					<input id="fname" name="fname" class="form-control" type="text" placeholder="Enter first name here">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="lname" class="col-sm-4 col-form-label right-text">Last Name</label>
+				<div class="col-sm-8">
+					<input id="lname" name="lname" class="form-control" type="text" placeholder="Enter last name here">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="email" class="col-sm-4 col-form-label right-text">Email</label>
+				<div class="col-sm-8">
+					<input id="email" name="email" class="form-control" type="email" placeholder="Enter email here">
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="accountType" class="col-sm-4 col-form-label right-text">Authorization Level</label>
+				<div class="col-sm-8">
+					<div class="form-check">
+						<input type="radio" name="accountType" class="form-check-input" value="user" id="user" checked>
+						<label class="form-check-label" for="user">User</label>
+					</div>
+					<div class="form-check">
+						<input type="radio" name="accountType" class="form-check-input" value="super" id="super">
+						<label class="form-check-label" for="super">Super User</label>
+					</div>
+					<div class="form-check">
+						<input type="radio" name="accountType" class="form-check-input" value="admin" id="admin">
+						<label class="form-check-label" for="admin">Administrator</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="careSite" class="col-sm-4 col-form-label right-text">Care Site</label>
+				<div class="col-sm-8">
+					<select class="form-control">
+						<option value="none">Select a Care Site</option>
+						<option value="mis">Misericordia Community Hospital</option>
+						<option value="2">Another Hospital</option>
+						<option value="3">One More Hospital</option>
+					</select>
+				</div>
+			</div>
+
+			<br>
+			<p class="text-muted">Note: passwords and usernames are automatically generated by the system.</p>
+
+			<div class="form-group row justify-content-center">
+				<a href="#" class="button-success">Create Account</a>
+			</div>
+
+
+
+
+
+<!-- 
+
+			<label for="username">Username</label>
+			<input id="username" name="username" class="form-control" type="text" placeholder="Enter unique username here">
+			<label for="fname">First Name</label>
+			<input id="fname" name="fname" class="form-control" type="text" placeholder="Enter first name here">
+			<label for="lname">Last Name</label>
+			<input id="lname" name="lname" class="form-control" type="text" placeholder="Enter last name here">
+			<label for="email">Email</label>
+			<input id="email" name="email" class="form-control" type="email" placeholder="Enter email here">
+
+			<label for="accountType">Account Type</label>
+			<div class="form-check">
+				<input type="radio" name="accountType" class="form-check-input" value="user" id="user">
+				<label class="form-check-label" for="user">User</label>
+			</div>
+			<div class="form-check">
+				<input type="radio" name="accountType" class="form-check-input" value="super" id="super">
+				<label class="form-check-label" for="super">Super User</label>
+			</div>
+			<div class="form-check">
+				<input type="radio" name="accountType" class="form-check-input" value="admin" id="admin">
+				<label class="form-check-label" for="admin">Administrator</label>
+			</div>
+			<label for="careSite">Care Site</label>
+			<select class="form-control">
+				<option value="none">Select a Care Site</option>
+				<option value="mis">Misercordia Hospital</option>
+				<option value="2">Another Hospital</option>
+				<option value="3">One More Hospital</option>
+			</select>
+			<br>
+			<p class="text-muted">Note: passwords are automatically generated by the system.</p>
+
+			<a href="#" class="btn btn-success">Create Account</a> -->
+		</form>
+	</main>	
+
+	<footer>
+		<p>&copy; Covenant Health 2018</p>
+	</footer>
+</body>
+</html>
+

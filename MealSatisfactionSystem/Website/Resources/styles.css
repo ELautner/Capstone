@@ -1,0 +1,79 @@
+﻿.hidden {
+	display: none;
+}
+
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.dkBlTxt {
+	color: #253F89;
+}
+
+/*start of content styles*/
+.container {
+	width: 75em;
+	margin: 1em auto;
+	font-size: 100%;
+	line-height: 1.5;
+}
+
+header {
+	margin-bottom: 3em;
+	background-color: rgba(0,170,218,.5);
+	padding: 1.5em;
+}
+
+header img{
+	width: 85%;
+}
+
+h1{
+	margin-top: 5.5%;
+    font-size: 4em;
+}
+
+h2{
+    font-size: 3em;
+}
+
+main {
+	padding: 0 0 3em 3em;
+}
+
+section{
+	margin-bottom: 1.5em;
+}
+
+section p, section a{
+	margin: 0;
+    font-size: 1.5em;
+    line-height:2;
+}
+/*end of content styles*/
+
+/*Styles for the footer*/
+footer {
+	padding: 2em 2em 0 6em;
+}
+.bkgDkBlue {
+	background-color: #253F89;
+}
+
+.ltBlTxt {
+    color: #00AADA;
+}
+
+.footerText1 {
+	float: left;
+	padding: 0 1em 0 2em;
+	margin:0;
+}
+
+.footerText2 {
+	float: right;
+}
+
+/*end of footer styles*/

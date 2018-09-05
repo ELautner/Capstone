@@ -1,0 +1,563 @@
+﻿/*#region All Pages ------------------------------------------------------------------------------- All Pages*/
+html{
+    font-size: 16px; /* Needed for rems */
+}
+body{
+	padding: 0;
+	margin: 0;
+    min-height: 100vh;
+    min-width: 81.25rem;
+	position: relative;
+}
+main{
+	margin: 2rem auto 0 auto;
+	width: 1000px;
+	padding-bottom: 2rem;
+}
+
+h2{
+    margin-bottom: 2rem;
+}
+h3{
+    margin-bottom: 0.75rem;
+    font-weight: normal;
+}
+
+.right-text{
+	text-align: right;
+}
+.centre-text{
+	text-align: center;
+}
+.pull-right{
+    float: right;
+}
+.bold{
+	font-weight: bold;
+}
+
+/*#region Hints and notes*/
+p.hint{
+    color: #000000;
+    margin-bottom: 0.75rem;
+}
+p.hint::before{
+    content: "Hint: ";
+    font-weight: bold;
+}
+
+p.form-hint{
+    color: #000000;
+    margin-bottom: 0.75rem;
+    margin-left: 10.9rem;
+}
+p.form-hint::before{
+    content: "Hint: ";
+    font-weight: bold;
+}
+
+p.note{
+    color: #000000;
+    margin-bottom: 2rem;
+}
+p.note::before{
+    content: "Note: ";
+    font-weight: bold;
+}
+/*#endregion*/
+
+/*#region Basic page needs*/
+.hidden {
+    display: none;
+}
+.clearfix {
+	overflow: auto;
+}
+.clearfix::after {
+	content: "";
+	clear: both;
+	display: table;
+}
+/*#endregion*/
+
+/*#region Spacing*/
+.bottom-space{
+    margin-bottom: 2rem;
+}
+.top-space{
+    margin-top: 2rem;
+}
+/*#endregion*/
+
+/*#region Navigation bar*/
+nav{
+	background-color: #e0f9ff;
+	height: 4.375rem;
+}
+nav ul{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	font-size: 1.125rem;
+}
+nav ul li{
+	float: left;
+	margin-left: 0.9375rem;
+	line-height: 4.375rem;
+}
+nav ul li:first-child{ /* For the Covenant Health MSS font to be bold*/
+	font-weight: 500;
+}
+nav img{ /* For the logo */
+	margin-right: 0.625rem;
+	vertical-align: text-bottom;
+}
+nav a, nav a:link, nav a:visited, nav a:active, nav li{
+	text-decoration: none;
+	color: #636363;
+}
+nav a:hover, nav li:hover{
+	color: #0571ce;
+	text-decoration: none;
+}
+nav li:hover{
+    cursor: default;
+}
+
+.fa-angle-down{
+    font-size: 0.8rem;
+}
+
+ul.csadmin-nav-dd{
+    width: 14rem;
+}
+ul.account-nav-dd{
+    text-align: right;
+}
+
+/*#region Dropdown navigation*/
+nav ul ul{
+  display: none;
+  position: absolute;
+  background-color: #ededed;
+  margin: 0;
+  margin-left: -0.625rem;
+  margin-top: -1.25rem;
+}
+nav li:hover ul{
+  display: block;
+}
+nav ul ul li{
+  float: none;
+  line-height: 1.0;
+  margin: 0;
+  padding: 0.625rem;
+}
+nav ul ul li:first-child{
+	font-weight: normal;
+}
+/*#endregion Dropdown nav*/
+
+/*#region Account information*/
+ul.stick-right{
+	float: right;
+}
+ul.stick-right li{
+    margin-right: 1.563rem;
+}
+ul.stick-right li li{
+    margin-right: 0;
+}
+ul.stick-right ul{
+    position: absolute;
+    right: 1rem;
+}
+ul.stick-right a{
+	font-weight: normal;
+}
+/*#endregion Account info*/
+
+/*#endregion Navigation bar*/
+
+/*#region Buttons*/
+.button{
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	border-radius: 0.25rem;
+	color: #ffffff;
+}
+.button:hover{
+	text-decoration: none;
+	color: #ffffff;
+}
+.button:focus{
+	box-shadow: 0 0 0 0.2rem rgba(0,0,0,.2);
+}
+
+.second-button{
+    margin-left: 1.5rem;
+}
+/*#endregion Buttons*/
+
+/*#region Forms, checkboxes, and radio buttons*/
+.centre-form{
+	width: 35rem;
+	margin: 0 auto;
+}
+
+.asp-check-and-radio{
+    padding-top: 0.625rem;
+}
+.check-and-radio-space label{
+    margin-left: 0.625rem;
+}
+/*#endregion Forms, checkboxes, and radio buttons*/
+
+/*#region Tables*/
+table tr th {
+	background-color: #C0C0C0;
+}
+
+table.scroll{
+	width: 12.5rem;
+}
+table.scroll tbody, table.scroll thead tr{
+	display: block;
+}
+table.scroll tbody{
+	height: 34.38rem;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+table.scroll tbody td, table.scroll thead th{
+	width: 12.5rem;
+}
+/*#endregion Tables*/
+
+/*#region Message User Controller styles*/
+.muc{
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 0.3125rem;
+}
+.muc-title{
+    font-weight: 700;
+}
+.muc-danger{
+    background: rgba(206, 5, 14, 0.4);
+}
+.muc-success{
+    background: rgba(131, 188, 1, 0.4);
+}
+.muc-info{
+    background: #e0f9ff;
+}
+
+.muc-sys-error{
+    font-family: monospace;
+    padding: 1rem;
+    display: inherit;
+}
+/*#endregion Message User Controller styles*/
+
+/*#region Colours*/
+/* Changing bootstrap's colours to match Covenant Health's */
+
+/*#region Info: Used for searching and general info tools*/
+.button-info{
+	background-color: #08a9ce;
+	border-color: #08a9ce;	
+}
+.button-info:hover, .button-info:active, .button-info:focus{
+	background-color: #45BEDA;
+	border-color: #45BEDA;
+}
+.border-info{
+	border-color: #08a9ce!important;
+}
+.text-info{
+	color: #08a9ce!important;
+}
+/*#endregion Info*/
+
+/*#region Primary: Used for Updating and other basic functions */
+.button-primary{
+	background-color: #0571ce;
+	border-color: #0571ce;	
+}
+.button-primary:hover, .button-primary:active, .button-primary:focus{
+	background-color: #4394DA;
+	border-color: #4394DA;
+}
+.border-primary{
+	border-color: #0571ce!important;
+}
+.text-primary{
+	color: #0571ce!important;
+}
+/*#endregion Primary*/
+
+/*#region Secondary: The "odds and ends" button */
+.button-secondary{
+	background-color: #8a84d6;
+	border-color: #8a84d6;	
+}
+.button-secondary:hover, .button-secondary:active, .button-secondary:focus{
+	background-color: #A7A2E0;
+	border-color: #A7A2E0;
+}
+.border-secondary{
+	border-color: #8a84d6!important;
+}
+.text-secondary{
+	color: #8a84d6!important;
+}
+/*#endregion Secondary*/
+
+/*#region Success: Used for adding and creating */
+.button-success{
+	background-color: #83bc01;
+	border-color: #83bc01;	
+}
+.button-success:hover, .button-success:active, .button-success:focus{
+	background-color: #A2CC40;
+	border-color: #A2CC40;
+}
+.border-success{
+	border-color: #83bc01!important;
+}
+.text-success{
+	color: #83bc01!important;
+}
+/*#endregion Success*/
+
+/*#region Warning: Used for messages to user that include important information */
+.button-warning{
+	background-color: #ff9e1a;
+	border-color: #ff9e1a;	
+}
+.button-warning:hover, .button-warning:active, .button-warning:focus{
+	background-color: #FFB653;
+	border-color: #FFB653;
+}
+.border-warning{
+	border-color: #ff9e1a!important;
+}
+.text-warning{
+	color: #ff9e1a!important;
+}
+/*#endregion Warning*/
+
+/*#region Danger: Used for delete buttons and error messages */
+/* NOTE: not a CH colour, created from a pallet to match other colours */
+.button-danger{
+	background-color: #CE050E;
+	border-color: #CE050E;	
+}
+.button-danger:hover, .button-danger:active, .button-danger:focus{
+	background-color: #DA434A;
+	border-color: #DA434A;
+}
+.border-danger{
+	border-color: #CE050E!important;
+}
+.text-danger{
+	color: #CE050E!important;
+}
+/*#endregion Danger*/
+
+/*#region Plain: Used for clearing and cancelling */
+/* NOTE: not a CH colour, created from a pallet to match other colours */
+.button-plain{
+	background-color: #999999;
+	border-color: #999999;	
+}
+.button-plain:hover, .button-plain:active, .button-plain:focus{
+	background-color: #B1B1B1;
+	border-color: #B1B1B1;
+}
+.border-plain{
+	border-color: #999999!important;
+}
+.text-plain{
+	color: #999999!important;
+}
+/*#endregion Plain*/
+/*#endregion Colours*/
+
+/*#region Footer */
+footer{
+	background-color: #e0f9ff;
+	width: 100%;
+    height: 1.875rem;
+    position: absolute;
+	bottom: 0;
+}
+footer p{
+	text-align: center;
+	margin-bottom: 0.313rem;
+    line-height: 1.875rem;
+    padding: 0;
+    margin: 0;
+}
+/*#endregion Footer*/
+/*#endregion All Pages*/
+
+/*#region Login Page (index.aspx) ---------------------------------------------------------------- Login Page */
+.login-form{
+	width: 30rem;
+	margin: 0 auto;
+}
+/*#endregion*/
+
+/*#region Dashboard Page --------------------------------------------------------------------- Dashboard Page */
+ul.landing-nav{
+	list-style-type: none;
+	padding: 0;
+}
+
+div.dasherror{
+    padding: 1rem;
+    border-radius: 0.3125rem;
+    background: rgba(206, 5, 14, 0.4);
+    margin-bottom: 1rem;
+}
+
+.dasherror span{
+    display: inherit;
+}
+/*#endregion*/
+
+/*#region Survey Access Codes Page ------------------------------------------------- Survey Access Codes Page */
+.access-code{
+    display: block;
+	font-weight: bold;
+    text-align: center;
+    font-size: 1.5rem;
+}
+/*#endregion*/
+
+/*#region Contact Requests Page ------------------------------------------------------- Contact Requests Page */
+table.contact-req tr td:first-child{ /* centering the checkboxes in the table */
+	text-align: center;
+}
+
+.contact-req-btn{
+    width: 14rem;
+}
+/*#endregion*/
+
+/*#region Survey Details Page ----------------------------------------------------------- Survey Details Page */
+.question-answer{
+    font-weight: bold;
+    padding-left: 1.875rem;
+    display: block;
+    margin-bottom: 0.9375rem;
+}
+.contact-header{
+    line-height: 2.188rem;
+}
+/*#endregion*/
+
+/*#region Reports and Trends Page --------------------------------------------------- Reports and Trends Page */
+.report-btn{
+    width: 9rem;
+}
+
+.report-container{
+    margin: 0 auto; 
+    text-align: right;
+}
+/*#endregion*/
+
+/*#region Manage Care Site Page ------------------------------------------------------- Manage Care Site Page */
+.man-cs-btn{
+    width: 11rem;
+}
+/*#endregion*/
+
+/*#region Accounts Page ----------------------------------------------------------------------- Accounts Page */
+.accounts-btn{
+    width: 7rem;
+}
+/*#endregion*/
+
+/*#region Manage Unit Page ----------------------------------------------------------------- Manage Unit Page */
+.man-unit-btn{
+    width: 9rem;
+}
+.update-unit-space{
+    margin-right: 1.2rem;
+}
+.deactivate-unit{
+    flex: 0 0 48%;
+    max-width: 40rem;
+}
+/*#endregion*/
+
+/*#region Manage Accounts Page --------------------------------------------------------- Manage Accounts Page */
+.man-acnt-btn{
+    width: 11rem;
+}
+/*#endregion*/
+
+/*#region Manage Access Codes Page ------------------------------------------------- Manage Access Codes Page */
+.access-code-page-btn{
+    width: 7.5rem;
+}
+
+/*#region Search section */
+.search-type-space{
+    margin-left: 0;
+}
+
+.search-label{
+    margin-left: 1.25rem;
+    margin-right: 0.625rem;
+    width: 6.25rem;
+}
+
+.radiobutton-list-spaced td label{
+    margin-right: 2rem;
+}
+.button-label-spaced label{
+    margin-right: 2rem;
+}
+/*#endregion*/
+
+/*#region Letter list */
+ul.access-code-letter-list{
+    margin-left: 0.5rem;
+    margin-top: 1rem;
+    list-style-type: none;
+    padding: 0;
+}
+
+ul.access-code-letter-list li{
+    float: left;
+    padding: 0.625rem 0;
+}
+ul.access-code-letter-list li a{
+    padding: 0.625rem;
+}
+/*#endregion*/
+
+/*#region Code List table */
+.access-code-table-false{ /*access code is not active*/
+    text-decoration: line-through;
+}
+/*#endregion*/
+
+/*#region Update code section */
+.update-code-box{
+    padding-right: 0;
+}
+.flush-with-textbox{
+    margin-left: 0.5rem;
+}
+/*#endregion*/
+/*#endregion Manage Access Codes Page*/

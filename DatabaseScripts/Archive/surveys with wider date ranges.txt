@@ -1,0 +1,284 @@
+-- surveys with wider date ranges
+
+-- Survey #81
+INSERT INTO Survey (Date, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, AgeGroupID, GenderID, RespondentTypeID, UnitID)
+    VALUES ('2014-02-04', 'Shara', null, '780-729-5283',
+		 'Phone', true, 2, 4, 5, 6);
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (81, 3, 'The variety of food in your daily meals', 'Fair');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (81, 7, 'The taste and flavour of your meals', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (81, 11, 'The temperature of your hot food', 'Very Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (81, 17, 'The overall appearance of your meal', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (81, 24, 'The helpfulness of the staff who deliver your meals', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (81, 27, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are just right');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (81, 29, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'Always');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (81, 36, 'Overall, how would you rate your meal experience?', 'Fair');
+
+
+
+
+INSERT INTO Survey (Date, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, AgeGroupID, GenderID, RespondentTypeID, UnitID)
+    VALUES ('2015-01-03', 'Greg', '02-04-01', null,
+		 'In Person', false, 2, 2, 1, 10);
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (82, 4, 'The variety of food in your daily meals', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (82, 8, 'The taste and flavour of your meals', 'Fair');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (82, 12, 'The temperature of your hot food', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (82, 19, 'The overall appearance of your meal', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (82, 22, 'The helpfulness of the staff who deliver your meals', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (82, 26, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are too small');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (82, 30, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'Usually');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (82, 35, 'Overall, how would you rate your meal experience?', 'Good');
+
+
+
+INSERT INTO Survey (Date, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, AgeGroupID, GenderID, RespondentTypeID, UnitID)
+    VALUES ('2017-12-21', 'John', null, '780-457-9034',
+		 'Phone', true, 1, 2, 1, 1);
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (83, 4, 'The variety of food in your daily meals', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (83, 8, 'The taste and flavour of your meals', 'Fair');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (83, 14, 'The temperature of your hot food', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (83, 17, 'The overall appearance of your meal', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (83, 21, 'The helpfulness of the staff who deliver your meals', 'Very Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (83, 27, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are just right');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (83, 31, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'Occasionally');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (83, 35, 'Overall, how would you rate your meal experience?', 'Good');
+
+
+
+INSERT INTO Survey (Date, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, AgeGroupID, GenderID, RespondentTypeID, UnitID)
+    VALUES ('2014-01-03', null, null, null, null, null, 1, 4, 1, 13);
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (84, 1, 'The variety of food in your daily meals', 'Very Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (84, 7, 'The taste and flavour of your meals', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (84, 14, 'The temperature of your hot food', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (84, 19, 'The overall appearance of your meal', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (84, 23, 'The helpfulness of the staff who deliver your meals', 'Fair');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (84, 26, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are too small');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (84, 33, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'I do not have any specific dietary requirements');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (84, 37, 'Overall, how would you rate your meal experience?', 'Poor');
+
+
+	
+-- Survey 85
+INSERT INTO Survey (Date, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, AgeGroupID, GenderID, RespondentTypeID, UnitID)
+    VALUES ('2014-01-03', null, null, null, null, null, 3, 4, 1, 23);
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (85, 2, 'The variety of food in your daily meals', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (85, 8, 'The taste and flavour of your meals', 'Fair');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (85, 14, 'The temperature of your hot food', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (85, 17, 'The overall appearance of your meal', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (85, 21, 'The helpfulness of the staff who deliver your meals', 'Very Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (85, 27, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are just right');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (85, 32, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'Never');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (85, 35, 'Overall, how would you rate your meal experience?', 'Good');
+
+
+
+INSERT INTO Survey (Date, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, AgeGroupID, GenderID, RespondentTypeID, UnitID)
+    VALUES ('2015-01-03', null, null, null, null, null, 1, 4, 1, 21);
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (86, 3, 'The variety of food in your daily meals', 'Fair');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (86, 9, 'The taste and flavour of your meals', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (86, 12, 'The temperature of your hot food', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (86, 16, 'The overall appearance of your meal', 'Very Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (86, 22, 'The helpfulness of the staff who deliver your meals', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (86, 28, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are too large');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (86, 31, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'Occasionally');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (86, 34, 'Overall, how would you rate your meal experience?', 'Very Good');
+
+
+	
+INSERT INTO Survey (Date, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, AgeGroupID, GenderID, RespondentTypeID, UnitID)
+    VALUES ('2016-01-05', null, null, null, null, null, 5, 1, 2, 22);
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (87, 4, 'The variety of food in your daily meals', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (87, 9, 'The taste and flavour of your meals', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (87, 12, 'The temperature of your hot food', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (87, 16, 'The overall appearance of your meal', 'Very Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (87, 24, 'The helpfulness of the staff who deliver your meals', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (87, 28, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are too large');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (87, 33, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'I do not have any specific dietary requirements');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (87, 36, 'Overall, how would you rate your meal experience?', 'Fair');
+
+
+
+INSERT INTO Survey (Date, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, AgeGroupID, GenderID, RespondentTypeID, UnitID)
+	VALUES ('2016-07-12', 'Jenny', '01-01-01', null,
+     	'In Person', false, 3, 1, 1, 33);
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (88, 3, 'The variety of food in your daily meals', 'Fair');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (88, 9, 'The taste and flavour of your meals', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (88, 12, 'The temperature of your hot food', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (88, 16, 'The overall appearance of your meal', 'Very Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (88, 22, 'The helpfulness of the staff who deliver your meals', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (88, 27, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are just right');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (88, 33, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'I do not have any specific dietary requirements');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (88, 34, 'Overall, how would you rate your meal experience?', 'Very Good');
+
+
+
+INSERT INTO Survey (Date, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, AgeGroupID, GenderID, RespondentTypeID, UnitID)
+	VALUES ('2016-07-12', 'Betty', null, '1-780-203-7586',
+     	'Phone', false, 3, 1, 6, 31);
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (89, 4, 'The variety of food in your daily meals', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (89, 9, 'The taste and flavour of your meals', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (89, 13, 'The temperature of your hot food', 'Fair');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (89, 17, 'The overall appearance of your meal', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (89, 22, 'The helpfulness of the staff who deliver your meals', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (89, 26, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are too small');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (89, 31, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'Occasionally');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (89, 34, 'Overall, how would you rate your meal experience?', 'Very Good');
+
+
+
+-- Survey 90
+INSERT INTO Survey (Date, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, AgeGroupID, GenderID, RespondentTypeID, UnitID)
+    VALUES ('2014-01-03', null, null, null, null, null, 3, 4, 1, 43);
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (90, 2, 'The variety of food in your daily meals', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (90, 6, 'The taste and flavour of your meals', 'Very Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (90, 12, 'The temperature of your hot food', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (90, 19, 'The overall appearance of your meal', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (90, 23, 'The helpfulness of the staff who deliver your meals', 'Fair');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (90, 27, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are just right');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (90, 29, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'Always');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (90, 37, 'Overall, how would you rate your meal experience?', 'Poor');
+
+
+
+INSERT INTO Survey (Date, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, AgeGroupID, GenderID, RespondentTypeID, UnitID)
+    VALUES ('2017-01-03', null, null, null, null, null, 1, 4, 1, 41);
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (91, 2, 'The variety of food in your daily meals', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (91, 8, 'The taste and flavour of your meals', 'Fair');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (91, 14, 'The temperature of your hot food', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (91, 16, 'The overall appearance of your meal', 'Very Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (91, 22, 'The helpfulness of the staff who deliver your meals', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (91, 27, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are just right');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (91, 29, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'Always');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (91, 34, 'Overall, how would you rate your meal experience?', 'Very Good');
+
+
+
+INSERT INTO Survey (Date, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, AgeGroupID, GenderID, RespondentTypeID, UnitID)
+    VALUES ('2017-01-06', null, null, null, null, null, 6, 4, 1, 45);
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (92, 2, 'The variety of food in your daily meals', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (92, 8, 'The taste and flavour of your meals', 'Fair');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (92, 14, 'The temperature of your hot food', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (92, 17, 'The overall appearance of your meal', 'Good');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (92, 24, 'The helpfulness of the staff who deliver your meals', 'Poor');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (92, 27, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are just right');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (92, 30, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'Usually');
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (92, 35, 'Overall, how would you rate your meal experience?', 'Good');

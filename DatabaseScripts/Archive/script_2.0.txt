@@ -1,0 +1,1579 @@
+-- Database: MSSDB
+
+-- New Version (2.0)
+
+ DROP table if exists QuestionOption; -- RUN THIS, was an old table 
+ DROP TABLE if exists AccountSite;
+
+-- Drop Tables
+DROP TABLE if exists SurveyAnswer;
+DROP TABLE if exists PossibleAnswer;
+DROP TABLE if exists SurveyQuestion;
+DROP TABLE if exists Survey;
+DROP TABLE if exists Unit;
+DROP TABLE if exists RespondentType;
+DROP TABLE if exists AccountCareSite;
+DROP TABLE if exists ManagementAccount;
+DROP TABLE if exists AuthorizationLevel;
+DROP TABLE if exists CareSiteAccess;
+DROP TABLE if exists CareSite;
+DROP TABLE if exists AccessCode;
+
+
+
+-- AccessCode
+-- The AccessCode database entity stores a list of pre-approved words that can be used as survey access codes for any care site in the database.
+CREATE TABLE AccessCode (
+    
+	AccessCodeID SERIAL -- SERIAL = AutoIncrement
+    	PRIMARY KEY,
+
+	AccessCodeWord	varchar(8) NOT NULL
+    	CONSTRAINT ck_CodeLength CHECK (char_length(AccessCodeWord) BETWEEN 6 AND 8), -- Between 6 and 8 characters inclusive
+
+	ActiveYN boolean NOT NULL
+    	DEFAULT true -- Assigned a default value of true
+
+);
+
+-- CareSite
+-- The CareSite database entity stores all hospitals or care sites where the MSS is being used.
+CREATE TABLE CareSite (
+    
+	CareSiteID SERIAL -- SERIAL = AutoIncremet
+    	PRIMARY KEY,
+
+	CareSiteName  varchar(80) NOT NULL
+    	CONSTRAINT ck_CareSiteNameLength CHECK (char_length(CareSiteName) >= 5), -- Must be 5 characters or more
+
+	Address varchar(40) NOT NULL,
+
+	City varchar(30) NOT NULL,
+
+	Province char(2) NOT NULL -- Will use postal abrevations (ex. AB = Alberta)
+	CONSTRAINT ck_ProvinceFormat check (Province SIMILAR TO '[A-Z][A-Z]'), --Must be 2 uppercase letters, 
+    
+	ActiveYN boolean NOT NULL
+    	DEFAULT true -- Assigned a default value of true
+
+);
+
+
+-- CareSiteAccess
+-- The CareSiteAccess database entity stores the date that an access code is assigned and the care site the access code is being used for.
+CREATE TABLE CareSiteAccess (
+    
+	AccessCodeID int NOT NULL
+    	REFERENCES AccessCode(AccessCodeID), -- Creates foreign key relationship
+
+	CareSiteID int NOT NULL
+    	REFERENCES CareSite(CareSiteID), -- Creates foreign key relationship
+
+	DateUsed timestamp NOT NULL
+    	DEFAULT date_trunc('day', CURRENT_TIMESTAMP)  -- Defualt of the current date and time
+    	CONSTRAINT ck_DateUsedCheck CHECK (DateUsed >= date_trunc('day', CURRENT_TIMESTAMP)), -- Must be a current or future date
+    
+	PRIMARY KEY (AccessCodeID, CareSiteID)
+
+);
+
+-- AuthorizationLevel
+-- The AuthorizationLevel database entity stores security levels that
+-- determine what permissions the user has when interaction with the management website
+CREATE TABLE AuthorizationLevel (
+    
+	AuthorizationLevelID int -- Not Auto incremented
+    	PRIMARY KEY,
+    
+	AuthorizationLevelName varchar(20) NOT NULL,
+    
+	AuthorizationLevelDescription varchar(150) NOT NULL,
+    
+	ActiveYN boolean NOT NULL
+    	DEFAULT true -- Assigned a default value of true
+    
+);
+
+-- ManagementAccount 
+-- The ManagementAccount database entity stores management account details
+CREATE TABLE ManagementAccount (
+    
+	ManagementAccountID SERIAL -- SERIAL = AutoIncremet
+    	PRIMARY KEY,
+    
+	FirstName varchar(40) NOT NULL,
+    
+	LastName varchar(40) NOT NULL,
+    
+	Email varchar(254) NOT NULL,
+    	
+    
+	Username varchar(83) NOT NULL,
+    
+	UserPassword varchar(16) NOT NULL -- Password is used in the SQL syntax
+    	CONSTRAINT ck_UserPassword CHECK (UserPassword SIMILAR TO '[A-Z][^\s]{7,}'), -- Password must start with a capital, must be at least 8 characters
+    
+	ActiveYN boolean NOT NULL
+    	DEFAULT true, -- Assigned a default value of true
+    
+	AuthorizationLevelID int NOT NULL
+    	REFERENCES AuthorizationLevel(AuthorizationLevelID)    
+);
+
+-- AccountCareSite
+-- The AccountCareSite database entity stores which stores which
+-- sites are allowed to be accessed by which management accounts
+CREATE TABLE AccountCareSite (
+    
+	CareSiteID int NOT NULL
+    	REFERENCES CareSite(CareSiteID),
+    
+	ManagementAccountID int NOT NULL
+    	REFERENCES ManagementAccount(ManagementAccountID),
+    
+	PRIMARY KEY (CareSiteID, ManagementAccountID)
+);
+
+-- RespondentType
+-- The RespondentType database entity
+-- stores the different roles that a survey respondent can
+-- pick from on the survey form. Our initial roles include Patient, Physician/Doctor, Staff, Visitor and Volunteer.
+CREATE TABLE RespondentType (
+
+	RespondentTypeID SERIAL  -- SERIAL = AutoIncremet
+    	PRIMARY KEY,
+    
+	RespondentTypeName varchar(15) NOT NULL,
+    
+	ActiveYN boolean NOT NULL
+    	DEFAULT true -- Assigned a default value of true
+
+);
+
+-- Unit
+-- The Unit database entity stores all units belonging to a CareSite.
+CREATE TABLE Unit (
+    
+	UnitID SERIAL  -- SERIAL = AutoIncremet
+    	PRIMARY KEY,
+
+	UnitName varchar(60) NOT NULL,
+    
+	ActiveYN boolean NOT NULL
+    	DEFAULT true, -- Assigned a default value of true
+   	 
+	CareSiteID int NOT NULL
+    	REFERENCES CareSite(CareSiteID)
+
+);
+
+-- Survey
+-- The Survey database entity stores general data collected from Survey Respondents via the survey form.
+CREATE TABLE Survey
+(
+    
+	SurveyID SERIAL -- SERIAL = AutoIncremet
+    	PRIMARY KEY,
+
+	Date timestamp NOT NULL
+    	DEFAULT date_trunc('day', CURRENT_TIMESTAMP), -- Defaults to current date
+    	   	 
+	Age varchar(8)  NULL,
+
+	Gender char(1)  NULL
+    	CONSTRAINT ck_Gender CHECK (Gender = 'M' OR Gender = 'F' OR Gender = 'O'  OR Gender = 'N'), -- Must be male, female, other or Prefer not to say
+
+	FirstName varchar(40)  NULL,
+
+	BedNumber varchar(10) NULL,
+    
+	PhoneNumber varchar(14) NULL
+    	CONSTRAINT ck_PhoneNumber CHECK (PhoneNumber SIMILAR TO '(1-[1-9][0-9][0-9]|[1-9][0-9][0-9])-[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'),  -- First digit of area code cannot be 0, must have 10 digits and 2 dashes.
+
+	PreferredContact varchar(10) NULL,
+
+	ContactedYN boolean NULL
+    	DEFAULT false, -- assign a default value of false
+
+	RespondentTypeID int NOT NULL
+    	REFERENCES RespondentType(RespondentTypeID),
+
+	UnitID int NOT NULL
+    	REFERENCES Unit(UnitID)
+
+);
+
+-- SurveyQuestion
+-- The SurveyQuestion database entity stores all questions on the survey.
+CREATE TABLE SurveyQuestion (
+    
+	SurveyQuestionID SERIAL -- SERIAL = AutoIncremet
+    	PRIMARY KEY,
+    
+	Question varchar(250) NOT NULL,
+    
+	QuestionType varchar(20) NOT NULL	 
+    	CONSTRAINT ck_QuestionType CHECK (QuestionType = 'Written' OR QuestionType ='MultipleChoice'), -- Has to be ‘Multiple Choice’ or ‘Written’.
+    
+	ActiveYN boolean NOT NULL
+    	DEFAULT true -- Assigned a default value of true
+    
+);
+
+-- PossibleAnswer
+-- The PossibleAnswer database entity stores the different options that serve as answers for a question.
+CREATE TABLE PossibleAnswer (
+    
+	PossibleAnswerID int
+    	PRIMARY KEY,
+    
+	PossibleAnswerText varchar(250),
+    
+	ActiveYN boolean NOT NULL
+    	DEFAULT true, -- Assigned a default value of true
+    
+	SurveyQuestionID int NOT NULL
+    	REFERENCES SurveyQuestion(SurveyQuestionID)
+);
+
+-- SurveyAnswer
+-- The SurveyAnswer database entity stores all received answers from received surveys.
+CREATE TABLE SurveyAnswer
+(
+	SurveyID int NOT NULL
+    	REFERENCES Survey(SurveyID),
+    
+	PossibleAnswerID int NOT NULL
+    	REFERENCES PossibleAnswer(PossibleAnswerID),
+    
+	HistoricalQuestion  varchar(250) NOT NULL,
+    
+	Answer varchar(250) NULL,
+    
+	PRIMARY KEY (SurveyID, PossibleAnswerID)
+
+);
+
+
+-- Test data --
+
+-- AccessCode
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('sunshine');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('bubble');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('generous');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('divine');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('heavenly');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('activity');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('artistic');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('election');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('wildlife');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('triangle');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('together');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('peaceful');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('notebook');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('midnight');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('highland');
+
+INSERT INTO AccessCode (AccessCodeWord, ActiveYN)
+	VALUES ('badword', false);
+
+INSERT INTO AccessCode (AccessCodeWord, ActiveYN)
+	VALUES ('abadword', false);
+
+INSERT INTO AccessCode (AccessCodeWord, ActiveYN)
+	VALUES ('inactive', false);
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('academy');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('fashion');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('explore');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('freedom');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('provide');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('printer');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('quarter');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('sixteen');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('student');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('succeed');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('weather');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('castle');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('chosen');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('dollar');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('eleven');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('garden');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('honest');
+
+INSERT INTO AccessCode (AccessCodeWord)
+	VALUES ('listen');		
+
+select * from AccessCode;
+
+
+-- CareSite
+INSERT INTO CareSite (CareSiteName, Address, City, Province, ActiveYN)
+	VALUES ('Misericordia Community Hospital', '16940 87 Ave NW', 'Edmonton', 'AB', true);
+
+INSERT INTO CareSite (CareSiteName, Address, City, Province, ActiveYN)
+	VALUES ('Grey Nuns Community Hospital', '1100 Youville Dr W Northwest', 'Edmonton', 'AB', default);
+
+INSERT INTO CareSite (CareSiteName, Address, City, Province, ActiveYN)
+	VALUES ('Edmonton General Continuing Care Centre', '11111 Jasper Ave', 'Edmonton', 'AB', true);
+
+INSERT INTO CareSite (CareSiteName, Address, City, Province, ActiveYN)
+	VALUES ('Villa Caritas', '16515 88 Ave NW', 'Edmonton', 'AB', true);
+
+INSERT INTO CareSite (CareSiteName, Address, City, Province, ActiveYN)
+	VALUES ('St. Joseph’s Auxiliary Hospital', '10707 29 Ave NW', 'Edmonton', 'AB', true);
+
+-- inactive test data
+INSERT INTO CareSite (CareSiteName, Address, City, Province, ActiveYN)
+	VALUES ('Outer Edmonton Care Centre', '23st, Hyper Ave', 'Edmonton', 'AB', false);
+
+INSERT INTO CareSite (CareSiteName, Address, City, Province, ActiveYN)
+	VALUES ('I am inactive', '10707 29 Ave NW', 'Edmonton', 'AB', false);
+
+select * from CareSite;
+
+
+-- CareSiteAccess
+INSERT INTO CareSiteAccess (AccessCodeID, CareSiteID, DateUsed)
+	VALUES (2, 1, '2019-02-21');
+
+INSERT INTO CareSiteAccess (AccessCodeID, CareSiteID, DateUsed)
+	VALUES (4, 2, '2019-02-21');
+
+INSERT INTO CareSiteAccess (AccessCodeID, CareSiteID, DateUsed)
+	VALUES (5, 1, '2019-02-20');
+
+INSERT INTO CareSiteAccess (AccessCodeID, CareSiteID, DateUsed)
+	VALUES (4, 1, '2019-02-19');
+	
+
+select * from CareSiteAccess;
+
+
+-- AuthorizationLevel
+INSERT INTO AuthorizationLevel (AuthorizationLevelID, AuthorizationLevelName, AuthorizationLevelDescription, ActiveYN)
+	VALUES (1, 'User', 'Can view surveys, survey reports, and update contact requests for a single caresite. Can update the pasword on their own account.', default);
+    
+INSERT INTO AuthorizationLevel (AuthorizationLevelID, AuthorizationLevelName, AuthorizationLevelDescription, ActiveYN)
+	VALUES (2, 'Super User', 'Can view surveys, survey reports, and update contact requests for all care sites. Can update the pasword on the account.', true);
+    
+INSERT INTO AuthorizationLevel (AuthorizationLevelID, AuthorizationLevelName, AuthorizationLevelDescription, ActiveYN)
+	VALUES (3, 'Administrator', 'Can view data for all care sites, create and update any account, modify units for care sites, modify access codes and modify care sites', true);
+    
+INSERT INTO AuthorizationLevel (AuthorizationLevelID, AuthorizationLevelName, AuthorizationLevelDescription, ActiveYN)
+	VALUES (4, 'Viewer', 'Can not view or edint anything but reports', false);
+
+select * from AuthorizationLevel;
+
+
+-- ManagementAccount
+
+INSERT INTO ManagementAccount (FirstName, LastName, Email, Username, UserPassword, ActiveYN, AuthorizationLevelID)
+	Values ('Jane', 'Doe', 'jane.doe1@email.com', 'janedoe1', 'Password1', default, 1);
+    
+INSERT INTO ManagementAccount (FirstName, LastName, Email, Username, UserPassword, ActiveYN, AuthorizationLevelID)
+	Values ('Jenny', 'Lexi', 'jenny.lexi1@email.com', 'jennylexi1', 'SuEBCEv9', true, 2);
+    
+INSERT INTO ManagementAccount (FirstName, LastName, Email, Username, UserPassword, ActiveYN, AuthorizationLevelID)
+	Values ('Wilbert', 'Jane', 'wilbert.jane3@email.com', 'wilbertjane3', 'DefaultPass7', true, 2);
+    
+INSERT INTO ManagementAccount (FirstName, LastName, Email, Username, UserPassword, ActiveYN, AuthorizationLevelID)
+	Values ('Brett', 'Smith', 'brett.smith3@email.com', 'brettsmith4', 'Password123', true, 1);
+    
+INSERT INTO ManagementAccount (FirstName, LastName, Email, Username, UserPassword, ActiveYN, AuthorizationLevelID)
+	Values ('Helen', 'Dasse', 'helen.dasse1@email.com', 'helendasse1', 'AT7X83Y1', true, 3);
+    
+-- inactive test data
+INSERT INTO ManagementAccount (FirstName, LastName, Email, Username, UserPassword, ActiveYN, AuthorizationLevelID)
+	Values ('Rosie', 'Ellis', 'rosie.ellis5@email.com', 'rosieellis5', 'M3MSsd2P', false, 1);
+
+INSERT INTO ManagementAccount (FirstName, LastName, Email, Username, UserPassword, ActiveYN, AuthorizationLevelID)
+	Values ('Imma', 'Inactive', 'imma.inactive1@email.com', 'immainactive1', 'Password34', false, 1);
+
+select * from ManagementAccount;
+
+-- AccountCareSite
+INSERT INTO AccountCareSite (CareSiteID, ManagementAccountID)
+	Values (1, 1);
+    
+INSERT INTO AccountCareSite (CareSiteID, ManagementAccountID)
+	Values (1, 2);
+    
+INSERT INTO AccountCareSite (CareSiteID, ManagementAccountID)
+	Values (2, 2);
+    
+INSERT INTO AccountCareSite (CareSiteID, ManagementAccountID)
+	Values (3, 2);
+    
+INSERT INTO AccountCareSite (CareSiteID, ManagementAccountID)
+	Values (2, 3);
+    
+INSERT INTO AccountCareSite (CareSiteID, ManagementAccountID)
+	Values (1, 4);
+
+INSERT INTO AccountCareSite (CareSiteID, ManagementAccountID)
+	Values (2, 4);
+    
+INSERT INTO AccountCareSite (CareSiteID, ManagementAccountID)
+	Values (3, 4);
+
+INSERT INTO AccountCareSite (CareSiteID, ManagementAccountID)
+	Values (3, 5);
+    
+INSERT INTO AccountCareSite (CareSiteID, ManagementAccountID)
+	Values (1, 6);
+
+INSERT INTO AccountCareSite (CareSiteID, ManagementAccountID)
+	Values (2, 6);
+    
+INSERT INTO AccountCareSite (CareSiteID, ManagementAccountID)
+	Values (3, 6);
+
+select * from AccountCareSite ;
+
+
+-- RespondentType
+INSERT INTO RespondentType (RespondentTypeName, ActiveYN)
+	VALUES ('Patient', default);
+
+INSERT INTO RespondentType (RespondentTypeName, ActiveYN)
+	VALUES ('Physician', true);
+
+INSERT INTO RespondentType (RespondentTypeName, ActiveYN)
+	VALUES ('Staff', true);
+
+INSERT INTO RespondentType (RespondentTypeName, ActiveYN)
+	VALUES ('Visitor', true);
+
+INSERT INTO RespondentType (RespondentTypeName, ActiveYN)
+	VALUES ('Volunteer', true);
+
+-- inactive test data
+INSERT INTO RespondentType (RespondentTypeName, ActiveYN)
+	VALUES ('Other', false);
+INSERT INTO RespondentType (RespondentTypeName, ActiveYN)
+	VALUES ('Inactive', false);
+
+select * from RespondentType;
+    
+-- Unit
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('8 East', true, 1);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('7 East', default, 1);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('7 West', default, 1);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('6 East', default, 1);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('6 West', default, 1);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('5 East', default, 1);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('5 West', default, 1);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('3 East', default, 1);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('3 North', default, 1);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('ED', default, 1);
+
+
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('ED', true, 2);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('3 North', true, 2);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('5 South', false, 2);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('8 East', true, 2);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('23 Central', true, 2);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('6 East', default, 2);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('6 West', default, 2);
+
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('8 East', true, 3);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('23 Central', true, 3);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('6 East', default, 3);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('6 West', default, 3);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('5 East', default, 3);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('5 West', default, 3);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('3 East', default, 3);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('3 North', default, 3);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('ED', default, 3);
+
+
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('8 East', true, 4);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('23 Central', true, 4);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('6 East', default, 4);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('6 West', default, 4);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('5 East', default, 4);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('5 West', default, 4);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('3 East', default, 4);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('3 North', default, 4);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('ED', default, 4);
+
+
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('8 East', true, 5);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('23 Central', true, 5);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('6 East', default, 5);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('6 West', default, 5);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('5 East', default, 5);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('5 West', default, 5);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('3 East', default, 5);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('3 North', default, 5);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('ED', default, 5);
+
+
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('8 East', true, 6);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('23 Central', true, 6);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('6 East', default, 6);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('6 West', default, 6);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('5 East', default, 6);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('5 West', default, 6);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('3 East', default, 6);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('3 North', default, 6);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('ED', default, 6);
+
+
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('8 East', true, 7);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('23 Central', true, 7);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('6 East', default, 7);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('6 West', default, 7);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('5 East', default, 7);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('5 West', default, 7);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('3 East', default, 7);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('3 North', default, 7);
+    
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('ED', default, 7);
+
+
+-- inactive test data
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('Inactive', false, 1);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('Inactive', false, 2);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('Inactive', false, 3);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('Inactive', false, 4);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('Inactive', false, 5);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('Inactive', false, 6);
+
+INSERT INTO Unit (UnitName, ActiveYN, CareSiteID)
+	VALUES ('Inactive', false, 7);
+
+
+select * from Unit;
+
+
+-- Surveys
+
+-- Care Site 1 surveys:
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-01', '18-34', 'N', 'Shara', null, '780-729-5283',
+		 'Phone', true, 5, 6);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-03', '18-34', 'M', 'Greg', '02-04-01', null,
+		 'In Person', false, 1, 10);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2017-12-21', '0-17', null, 'John', null, '780-457-9034',
+		 'Phone', true, 1, 1);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-03', '35-54', null, null, null, null, null, null, 1, 3);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-03', '0-17', null, null, null, null, null, null, 1, 1);
+		
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-05', '75+', 'F', null, null, null, null, null, 2, 2);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', '75+', 'M', null, null, null, null, null, 1, 4);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', null, 'F', null, null, null, null, null, 1, 7);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', null, null, null, null, null, null, null, 1, 6);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2018-02-03', null, 'N', 'William', null, '780-396-1524',
+     	'Phone', false, 3, 7);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2018-03-17', '75+', 'F', 'Dorothy', '04-02-01', null,
+     	'In Person', false, 3, 2);
+ 
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2018-11-13', '55-74', 'N', 'Sam', '03-01-04', null,
+     	'In Person', false, 2, 3);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2019-02-21', '18-34', 'M', 'Anthony', '04-04-04', null,
+     	'In Person', false, 5, 4);
+
+
+
+-- Care Site 2 surveys:
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2017-12-30', '18-34', null, 'Jenny', null, '1-778-629-9009',
+		 'Phone', false, 3, 11);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', '25-44', 'F', 'Carlie', null, '780-987-4860',
+		 'Phone', false, 4, 17);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2018-06-20', null, 'F', 'Jenny', '02-04-01', null,
+     	'In Person', false, 3, 15);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-03', '35-54', null, null, null, null, null, null, 1, 13);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-03', '0-17', null, null, null, null, null, null, 1, 13);
+		
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-05', '75+', 'F', null, null, null, null, null, 2, 13);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', '75+', 'M', null, null, null, null, null, 1, 12);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', null, 'F', null, null, null, null, null, 1, 16);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', null, null, null, null, null, null, null, 1, 16);
+
+
+
+-- Care Site 3 surveys:
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2018-12-03', '75+', 'M', 'Sam', null, '1-780-118-0257',
+     	'Phone', false, 2, 18);
+   	 
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2019-09-30', null, 'F', 'Alicia', '02-01-03', null,
+     	'In Person', true, 4, 18);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-03', '35-54', null, null, null, null, null, null, 1, 23);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-03', '0-17', null, null, null, null, null, null, 1, 21);
+		
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-05', '75+', 'F', null, null, null, null, null, 2, 22);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', '75+', 'M', null, null, null, null, null, 1, 24);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', null, 'F', null, null, null, null, null, 1, 26);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', null, null, null, null, null, null, null, 1, 24);
+
+
+
+-- Care Site 4 surveys:
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2018-07-12', '35-54', 'F', 'Jenny', '01-01-01', null,
+     	'In Person', false, 1, 33);
+    
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2018-07-12', '35-54', 'F', 'Betty', null, '1-780-203-7586',
+     	'Phone', false, 6, 31);
+   
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2019-01-22', '18-34', 'N', 'Shara', null, '780-403-0404',
+     	'Phone', true, 5, 32);
+   
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-03', '35-54', null, null, null, null, null, null, 1, 33);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-03', '0-17', null, null, null, null, null, null, 1, 31);
+		
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-05', '75+', 'F', null, null, null, null, null, 2, 32);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', '75+', 'M', null, null, null, null, null, 1, 34);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', null, 'F', null, null, null, null, null, 1, 35);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', null, null, null, null, null, null, null, 1, 29);
+
+
+
+-- Care Site 5 surveys:
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2018-06-20', '75+', 'F', 'Samantha', '01-02-04', null,
+     	'In Person', false, 3, 42);
+ 
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2018-12-07', null, 'N', 'Aaron', '03-01-04', null,
+     	'In Person', true, 2, 43);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2019-02-21', '0-18', 'M', 'John', '02-01-01', null,
+     	'In Person', true, 1, 41);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2018-07-12', '18-34', 'M', 'Eric', null, '1-780-204-3546',
+     	'Phone', false, 3, 43);
+ 
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2019-04-03', null, 'N', 'Shara', null, '780-729-5283',
+     	'Phone', true, 5, 44);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-03', '35-54', null, null, null, null, null, null, 1, 43);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-03', '0-17', null, null, null, null, null, null, 1, 41);
+		
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-05', '75+', 'F', null, null, null, null, null, 2, 37);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', '75+', 'M', null, null, null, null, null, 1, 38);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', null, 'F', null, null, null, null, null, 1, 37);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', null, null, null, null, null, null, null, 1, 40);
+
+
+
+-- Care Site 6 surveys:
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2017-06-20', '35-54', 'F', 'Jenny', '04-04-02', null,
+     	'In Person', true, 3, 53);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', '75+', 'M', null, null, null, null, null, 1, 50);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', null, 'F', null, null, null, null, null, 1, 45);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', null, null, null, null, null, null, null, 1, 45);
+
+
+-- Care Site 7 surveys:
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+ 	PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+	VALUES ('2017-12-03', '75+', 'F', 'Sam', null, '1-603-657-2100',
+     	'Phone', true, 2, 54);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', '75+', 'M', null, null, null, null, null, 1, 54);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', null, 'F', null, null, null, null, null, 1, 57);
+
+INSERT INTO Survey (Date, Age, Gender, FirstName, BedNumber,
+	 PhoneNumber, PreferredContact, ContactedYN, RespondentTypeID, UnitID)
+    VALUES ('2018-01-06', null, null, null, null, null, null, null, 1, 56);
+
+Select * from survey;
+    
+-- SurveyQuestion
+INSERT INTO SurveyQuestion (Question, QuestionType, ActiveYN)
+	VALUES ('The variety of food in your daily meals', 'MultipleChoice', true);
+    
+INSERT INTO SurveyQuestion (Question, QuestionType, ActiveYN)
+	VALUES ('The taste and flavour of your meals', 'MultipleChoice', true);
+    
+INSERT INTO SurveyQuestion (Question, QuestionType, ActiveYN)
+	VALUES ('The temperature of your hot food', 'MultipleChoice', true);
+    
+INSERT INTO SurveyQuestion (Question, QuestionType, ActiveYN)
+	VALUES ('The overall appearance of your meal', 'MultipleChoice', true);
+
+INSERT INTO SurveyQuestion (Question, QuestionType, ActiveYN)
+	VALUES ('The helpfulness of the staff who deliver your meals', 'MultipleChoice', true);
+    
+INSERT INTO SurveyQuestion (Question, QuestionType, ActiveYN)
+	VALUES ('How satisfied are you with the portion sizes of your meals?', 'MultipleChoice', true);
+
+INSERT INTO SurveyQuestion (Question, QuestionType, ActiveYN)
+	VALUES ('Do your meals take into account your specific diet requirements?
+(for example; food allergies, medical requirements, cultural preferences)', 'MultipleChoice', true);
+
+INSERT INTO SurveyQuestion (Question, QuestionType, ActiveYN)
+	VALUES ('Overall, how would you rate your meal experience?', 'MultipleChoice', true);
+    
+INSERT INTO SurveyQuestion (Question, QuestionType, ActiveYN)
+	VALUES ('Is there anything else you would like to share about your meal experience?', 'Written', true);
+
+select * from SurveyQuestion;
+
+
+-- PossibleAnswer
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (1, 'Very Good', true, 1);
+
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (2, 'Good', true, 1);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (3, 'Fair', true, 1);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (4, 'Poor', true, 1);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (5, 'Don''t Know / No Opinion', true, 1);
+
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (6, 'Very Good', true, 2);
+
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (7, 'Good', true, 2);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (8, 'Fair', true, 2);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (9, 'Poor', true, 2);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (10, 'Don''t Know / No Opinion', true, 2);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (11, 'Very Good', true, 3);
+
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (12, 'Good', true, 3);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (13, 'Fair', true, 3);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (14, 'Poor', true, 3);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (15, 'Don''t Know / No Opinion', true, 3);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (16, 'Very Good', true, 4);
+
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (17, 'Good', true, 4);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (18, 'Fair', true, 4);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (19, 'Poor', true, 4);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (20, 'Don''t Know / No Opinion', true, 4);
+
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (21, 'Very Good', true, 5);
+
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (22, 'Good', true, 5);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (23, 'Fair', true, 5);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (24, 'Poor', true, 5);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (25, 'Don''t Know / No Opinion', true, 5);
+
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (26, 'Portion sizes are too small', true, 6);
+
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (27, 'Portion sizes are just right', true, 6);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (28, 'Portion sizes are too large', true, 6);
+
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (29, 'Always', true, 7);
+
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (30, 'Usually', true, 7);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (31, 'Occasionally', true, 7);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (32, 'Never', true, 7);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (33, 'I do not have any specific dietary requirements', true, 7);
+
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (34, 'Very Good', true, 8);
+
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (35, 'Good', true, 8);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (36, 'Fair', true, 8);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (37, 'Poor', true, 8);
+    
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (38, 'Don''t Know / No Opinion', true, 8);
+	
+-- Will need to keep relationship in database
+INSERT INTO PossibleAnswer (PossibleAnswerID, PossibleAnswerText, ActiveYN, SurveyQuestionID)
+	VALUES (39, '', true, 9);
+
+select * from PossibleAnswer;
+
+-- SurveyAnswer
+
+-- SURVEY 1
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (1, 4, 'The variety of food in your daily meals', 'Poor');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (1, 6, 'The taste and flavour of your meals', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (1, 12, 'The temperature of your hot food', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (1, 17, 'The overall appearance of your meal', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (1, 21, 'The helpfulness of the staff who deliver your meals', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (1, 27,  'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are just right');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (1, 33, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'I do not have any specific dietary requirements');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (1, 35, 'Overall, how would you rate your meal experience?', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (1, 39, 'Is there anything else you would like to share about your meal experience?', 'I can''t believe how tasty the meals were! I always thought hospital food was bland, but you guys did a great job. Not much variety though.');
+
+-- SURVEY 2
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (2, 2, 'The variety of food in your daily meals', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (2, 6, 'The taste and flavour of your meals', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (2, 12, 'The temperature of your hot food', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (2, 17, 'The overall appearance of your meal', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (2, 21, 'The helpfulness of the staff who deliver your meals', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (2, 28, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are too large');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (2, 30, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'Usually');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (2, 34, 'Overall, how would you rate your meal experience?', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (2, 39,  'Is there anything else you would like to share about your meal experience?', 'Great service, thanks! Way too much food though.');
+
+-- SURVEY 3 (purposefully incomplete)
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (3, 29,  'Do your meals take into account your specific diet requirements?
+(for example; food allergies, medical requirements, cultural preferences)', 'Always');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (3, 34,  'Overall, how would you rate your meal experience?', 'Very Good');	
+
+-- SURVEY 4 (very angry person)
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (4, 4, 'The variety of food in your daily meals', 'Poor');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (4, 9, 'The taste and flavour of your meals', 'Poor');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (4, 14, 'The temperature of your hot food', 'Poor');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (4, 19, 'The overall appearance of your meal', 'Poor');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (4, 24, 'The helpfulness of the staff who deliver your meals', 'Poor');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (4, 26, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are too small');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (4, 32, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'Never');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (4, 37, 'Overall, how would you rate your meal experience?', 'Poor');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (4, 39, 'Is there anything else you would like to share about your meal experience?', 'I''m super duper angry come talk to me right now!');
+
+-- SURVEY 5 (no answers, just a comment)
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (5, 39, 'Is there anything else you would like to share about your meal experience?', 'Hello I just wanted to say hi!');
+
+-- SURVEY 6 (no comment left)
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (6, 2, 'The variety of food in your daily meals', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (6, 7, 'The taste and flavour of your meals', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (6, 11, 'The temperature of your hot food', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (6, 20, 'The overall appearance of your meal', 'Don''t Know / No Opinion');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (6, 23, 'The helpfulness of the staff who deliver your meals', 'Fair');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (6, 27, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are just right');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (6, 29, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'Always');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (6, 35, 'Overall, how would you rate your meal experience?', 'Good');
+
+-- SURVEY 7 (every even question answered)
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (7, 6, 'The taste and flavour of your meals', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (7, 16, 'The overall appearance of your meal', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (7, 28, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are too large');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (7, 34, 'Overall, how would you rate your meal experience?', 'Very Good');
+
+-- SURVEY 8 (every odd question answered)
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (8, 2, 'The variety of food in your daily meals', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (8, 12, 'The temperature of your hot food', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (8, 22, 'The helpfulness of the staff who deliver your meals', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (8, 33, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'I do not have any specific dietary requirements');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (8, 39, 'Is there anything else you would like to share about your meal experience?', 'Good food. Really liked the fish! Can I get the recipe?');
+
+-- SURVEY 9 
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (9, 2, 'The variety of food in your daily meals', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (9, 7, 'The taste and flavour of your meals', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (9, 11, 'The temperature of your hot food', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (9, 17, 'The overall appearance of your meal', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (9, 21, 'The helpfulness of the staff who deliver your meals', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (9, 28, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are too large');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (9, 30, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'Usually');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (9, 34, 'Overall, how would you rate your meal experience?', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (9, 39, 'Is there anything else you would like to share about your meal experience?', 'I love this survey! So glad you value my opinion.');
+
+-- SURVEY 10
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (10, 2, 'The variety of food in your daily meals', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (10, 7, 'The taste and flavour of your meals', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (10, 14, 'The temperature of your hot food', 'Poor');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (10, 18, 'The overall appearance of your meal', 'Fair');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (10, 21, 'The helpfulness of the staff who deliver your meals', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (10, 27, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are just right');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (10, 33, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'I do not have any specific dietary requirements');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (10, 35, 'Overall, how would you rate your meal experience?', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (10, 39, 'Is there anything else you would like to share about your meal experience?', 'I got soup today that was freezing cold!! Luckily one of your nice staff members gave me a new bowl. But that first sip was awful!');
+
+-- SURVEY 11
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (11, 1, 'The variety of food in your daily meals', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (11, 6, 'The taste and flavour of your meals', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (11, 11, 'The temperature of your hot food', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (11, 16, 'The overall appearance of your meal', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (11, 21, 'The helpfulness of the staff who deliver your meals', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (11, 27, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are just right');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (11, 29, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'Always');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (11, 34, 'Overall, how would you rate your meal experience?', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (11, 39, 'Is there anything else you would like to share about your meal experience?', 'Come talk to me; I want to tell you all how lovely you are! <3'); -- trying special characters to see how the database reacts
+
+-- SURVEY 12
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (12, 3, 'The variety of food in your daily meals', 'Fair');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (12, 7, 'The taste and flavour of your meals', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (12, 11, 'The temperature of your hot food', 'Very Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (12, 18, 'The overall appearance of your meal', 'Fair');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (12, 22, 'The helpfulness of the staff who deliver your meals', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (12, 26, 'How satisfied are you with the portion sizes of your meals?', 'Portion sizes are too small');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (12, 31, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'Occasionally');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (12, 35, 'Overall, how would you rate your meal experience?', 'Good');
+
+INSERT INTO SurveyAnswer (SurveyID, PossibleAnswerID, HistoricalQuestion, Answer)
+    VALUES (12, 39, 'Is there anything else you would like to share about your meal experience?', 'Was good.');
+
+
+-- Will insert more surveys later
+
+-- SURVEY 13
+
+
+-- SURVEY 14
+
+
+-- SURVEY 15
+
+
+-- SURVEY 16
+
+
+-- SURVEY 17
+
+
+-- SURVEY 18
+
+
+-- SURVEY 19
+
+-- SURVEY 20
+
+
+-- SURVEY 21
+
+
+-- SURVEY 22
+
+
+-- SURVEY 23
+
+
+-- SURVEY 24
+
+
+-- SURVEY 25
+
+
+-- SURVEY 26
+
+
+-- SURVEY 27
+
+
+-- SURVEY 28
+
+
+-- SURVEY 29
+
+
+-- SURVEY 30
+
+
+-- SURVEY 31
+
+
+-- SURVEY 32
+
+
+-- SURVEY 33
+
+
+-- SURVEY 34
+
+
+-- SURVEY 35
+
+
+-- SURVEY 36
+
+
+-- SURVEY 37
+
+
+-- SURVEY 38
+
+
+-- SURVEY 39
+
+
+
+select * from SurveyAnswer;
+
+
+
+/* 
+BLANK TEMPLATE FOR SURVEY ANSWERS: All you need to replace is the surveyID and the answer.
+
+INSERT INTO SurveyAnswer (SurveyID, SurveyQuestionID, HistoricalQuestion, Answer)
+    VALUES (XXX, 1, 'The variety of food in your daily meals', 'ANS');
+
+INSERT INTO SurveyAnswer (SurveyID, SurveyQuestionID, HistoricalQuestion, Answer)
+    VALUES (XXX, 2, 'The taste and flavour of your meals', 'ANS');
+
+INSERT INTO SurveyAnswer (SurveyID, SurveyQuestionID, HistoricalQuestion, Answer)
+    VALUES (XXX, 3, 'The temperature of your hot food', 'ANS');
+
+INSERT INTO SurveyAnswer (SurveyID, SurveyQuestionID, HistoricalQuestion, Answer)
+    VALUES (XXX, 4, 'The overall appearance of your meal', 'ANS');
+
+INSERT INTO SurveyAnswer (SurveyID, SurveyQuestionID, HistoricalQuestion, Answer)
+    VALUES (XXX, 5, 'The helpfulness of the staff who deliver your meals', 'ANS');
+
+INSERT INTO SurveyAnswer (SurveyID, SurveyQuestionID, HistoricalQuestion, Answer)
+    VALUES (XXX, 6, 'How satisfied are you with the portion sizes of your meals?', 'PORTION_ANS');
+
+INSERT INTO SurveyAnswer (SurveyID, SurveyQuestionID, HistoricalQuestion, Answer)
+    VALUES (XXX, 7, 'Do your meals take into account your specific diet requirements? (for example; food allergies, medical requirements, cultural preferences)', 'DIET_ANS');
+
+INSERT INTO SurveyAnswer (SurveyID, SurveyQuestionID, HistoricalQuestion, Answer)
+    VALUES (XXX, 8, 'Overall, how would you rate your meal experience?', 'ANS');
+
+INSERT INTO SurveyAnswer (SurveyID, SurveyQuestionID, HistoricalQuestion, Answer)
+    VALUES (XXX, 9, 'Is there anything else you would like to share about your meal experience?', 'ANS');
+
+
+ANSWERS: for easy copy-pasta
+
+Very Good
+Good
+Fair
+Poor
+Don''t Know / No Opinion
+
+#6:
+Portion sizes are too small
+Portion sizes are just right
+Portion sizes are too large
+
+#7:
+Always
+Usually
+Occasionally
+Never
+I do not have any specific dietary requirements
+
+ */
+

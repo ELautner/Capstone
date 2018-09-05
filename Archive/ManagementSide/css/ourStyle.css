@@ -1,0 +1,110 @@
+/*GENERIC ALL DEVICE STYLES*/
+	body, h1,h2,h3,h4,p {
+		margin: 0;
+		padding: 0;
+	}
+
+	.clearFix
+
+	.visible {
+	visibility: visible;
+	}
+
+	.hidden {
+		visibility: hidden;
+	}
+
+	.container img {
+		width: 100%;
+	}
+
+	.bkgDkBlue {
+		background-color: #253F89;
+	}
+
+	.container .dkBck {
+		background-color: #253F89;
+	}
+
+	.ltBlue
+	{
+		background-color: rgba(0,166,205,.1);
+	}
+
+	.row h1 {
+		font-size: 2em;
+		vertical-align: middle;
+		margin-top: 10%;
+		font-weight: bolder;
+	}
+
+	header {
+		background-color: rgba(0,166,205,.5);
+		padding: 1.653em;
+	}
+
+	main,.container .surveyForm{
+		/*background-color: rgba(0,166,205,.1);*/
+		padding: 0.781em;
+	}
+
+	textarea, fieldset, select {
+		width: 100%;
+	}
+
+	footer {
+		position: bottom;
+	}
+
+	footer p {
+		text-align: center;
+		color: rgba(255,255,255,.9);
+	}
+/*END OF GENERIC STYLES*/
+
+
+/*TABLET STYLES*/
+@media screen and (min-width:48em)
+{
+	.row h1 {
+		font-size: 2.5em;
+	}
+
+	textarea, fieldset, select {
+		width: 50%;
+	}
+}
+
+
+/*DESKTOP STYLES*/
+@media screen and (min-width:62.5em)
+{
+	.row h1 {
+		font-size: 3.5em;
+	}
+
+	  main, .surveyForm{
+		padding: 3.125em;
+	}
+
+	.row .inset {
+		margin:1.5em 0 0 1.5em;
+	}
+	.row h4 {
+		text-align: center;
+		margin-bottom: 3.5em 0;
+	}
+
+	.container footer {
+		background-color: rgba (37,63,137,.5);
+	}
+
+	main fieldset {
+		background-color: #FFF;
+	}
+
+	textarea, fieldset, select {
+		width: 100%;
+	}
+	
+}

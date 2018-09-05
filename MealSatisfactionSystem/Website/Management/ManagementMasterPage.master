@@ -1,0 +1,112 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="ManagementMasterPage.master.cs" Inherits="Management_ManagementMasterPage" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="author" content="">
+    <title><%: Page.Title %></title>
+
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+
+    <!-- Bootstrap ––––––––––––––––––––––––––––––––––––––– Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap.min.css" />
+
+    <!-- Stylesheets –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+
+    <!-- Fontawesome –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+    <!-- Favicon –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="icon" type="image/png" href="img/favicon.ico">
+</head>
+<body runat="server">
+    <form id="form1" runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="respond" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+            </Scripts>
+        </asp:ScriptManager>
+        <header>
+		    <nav>
+			    <ul>
+				    <li><a href="dashboard.aspx"><img src="img/logo_small.png" alt="Covenant Health Logo">Covenant Health Meal Satisfaction System</a></li>
+                    <li>Reporting <i class="fas fa-angle-down"></i>
+					    <ul>
+						    <li><a href="reporting.aspx">View Reports</a></li>
+						    <li><a href="trends.aspx">View Trends</a></li>
+					    </ul>
+				    </li>
+				    <li>Surveys <i class="fas fa-angle-down"></i>
+					    <ul>
+						    <li><a href="access_codes.aspx">View Survey Access Codes</a></li>
+						    <li><a href="surveys.aspx">View Surveys</a></li>
+						    <li><a href="contact_requests.aspx">View Contact Requests</a></li>
+					    </ul>
+				    </li>
+                    <asp:LoginView ID="AdministrationManagementView" runat="server">
+                     <RoleGroups>
+                         <asp:RoleGroup Roles="Administrator">
+                             <ContentTemplate>
+                             <li>Care Site Administration <i class="fas fa-angle-down"></i>
+					            <ul class="csadmin-nav-dd">
+						            <li><a href="care_site_add.aspx">Add Care Site</a></li>
+						            <li><a href="manage_care_site.aspx">Manage Care Site</a></li>
+						            <li><a href="manage_units.aspx">Manage Units</a></li>
+					            </ul>
+				            </li>
+                            <li>System Administration <i class="fas fa-angle-down"></i>
+					            <ul>
+						            <li><a href="account_add.aspx">Add Account</a></li>
+						            <li><a href="accounts.aspx">Manage Accounts</a></li>
+                                    <li><a href="manage_access_codes.aspx">Manage Survey Access Codes</a></li>
+					            </ul>
+				            </li>
+                             </ContentTemplate>                     
+                         </asp:RoleGroup>
+                     </RoleGroups>
+                    </asp:LoginView>
+			    </ul>
+			    <ul class="stick-right">
+				    <li><asp:Label ID="WelcomeNameLabel" runat="server" Text=""></asp:Label> <i class="fas fa-user"></i> <i class="fas fa-angle-down"></i>
+					    <ul class="account-nav-dd">
+						    <li><a href="my_account.aspx">My Account</a></li>
+						    <li>
+                                <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log Out" LogoutPageUrl="~/Management/index.aspx" OnLoggingOut="Unnamed_LoggingOut" />
+						    </li>
+					    </ul>
+				    </li>
+			    </ul>
+		    </nav>
+	    </header>
+
+        <main>
+            <asp:ContentPlaceHolder id="Main" runat="server">
+            </asp:ContentPlaceHolder>
+        </main>
+    
+        <footer>
+		    <p>&copy; Covenant Health 2018</p>
+	    </footer>
+    </form>
+</body>
+</html>

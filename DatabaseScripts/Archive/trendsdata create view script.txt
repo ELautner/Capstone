@@ -1,0 +1,22 @@
+-- View: public.trendsdata
+
+-- DROP VIEW public.trendsdata;
+
+CREATE OR REPLACE VIEW public.trendsdata AS
+ SELECT survey.date,
+    surveyanswer.surveyid,
+    surveyanswer.possibleanswerid,
+    surveyanswer.historicalquestion,
+    possibleanswer.possibleanswertext,
+    surveyquestion.surveyquestionid,
+    surveyquestion.question
+   FROM survey,
+    surveyanswer,
+    possibleanswer,
+    surveyquestion
+  WHERE survey.surveyid = surveyanswer.surveyid;
+
+ALTER TABLE public.trendsdata
+    OWNER TO postgres;
+
+

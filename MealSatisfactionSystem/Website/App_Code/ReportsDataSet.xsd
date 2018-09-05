@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ReportsDataSet" targetNamespace="http://tempuri.org/ReportsDataSet.xsd" xmlns:mstns="http://tempuri.org/ReportsDataSet.xsd" xmlns="http://tempuri.org/ReportsDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="MSSDB" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="MSSDB (Web.config)" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.MSSDB.ConnectionString" Provider="Npgsql" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTable1TableAdapter" GeneratorDataComponentClassName="DataTable1TableAdapter" Name="DataTable1" UserDataComponentName="DataTable1TableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="MSSDB (Web.config)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT surveyquestion.question, possibleanswer.possibleanswertext, COUNT(surveyanswer.possibleanswerid) AS countanswers, possibleanswer.possibleanswerid
+FROM     survey LEFT OUTER JOIN
+                  surveyanswer ON surveyanswer.surveyid = survey.surveyid RIGHT OUTER JOIN
+                  possibleanswer ON surveyanswer.possibleanswerid = possibleanswer.possibleanswerid RIGHT OUTER JOIN
+                  surveyquestion ON possibleanswer.surveyquestionid = surveyquestion.surveyquestionid
+WHERE  (surveyquestion.surveyquestionid = 1)
+GROUP BY surveyquestion.question, surveyanswer.possibleanswerid, possibleanswer.possibleanswerid
+ORDER BY possibleanswer.possibleanswerid</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="question" DataSetColumn="question" />
+              <Mapping SourceColumn="possibleanswertext" DataSetColumn="possibleanswertext" />
+              <Mapping SourceColumn="countanswers" DataSetColumn="countanswers" />
+              <Mapping SourceColumn="possibleanswerid" DataSetColumn="possibleanswerid" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="ReportsDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_DataSetName="ReportsDataSet" msprop:Generator_UserDSName="ReportsDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="question" msprop:Generator_ColumnVarNameInTable="columnquestion" msprop:Generator_ColumnPropNameInRow="question" msprop:Generator_ColumnPropNameInTable="questionColumn" msprop:Generator_UserColumnName="question">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="250" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="possibleanswertext" msprop:Generator_ColumnVarNameInTable="columnpossibleanswertext" msprop:Generator_ColumnPropNameInRow="possibleanswertext" msprop:Generator_ColumnPropNameInTable="possibleanswertextColumn" msprop:Generator_UserColumnName="possibleanswertext" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="250" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="countanswers" msprop:Generator_ColumnVarNameInTable="columncountanswers" msprop:Generator_ColumnPropNameInRow="countanswers" msprop:Generator_ColumnPropNameInTable="countanswersColumn" msprop:Generator_UserColumnName="countanswers" type="xs:long" minOccurs="0" />
+              <xs:element name="possibleanswerid" msprop:Generator_ColumnVarNameInTable="columnpossibleanswerid" msprop:Generator_ColumnPropNameInRow="possibleanswerid" msprop:Generator_ColumnPropNameInTable="possibleansweridColumn" msprop:Generator_UserColumnName="possibleanswerid" type="xs:int" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:DataTable1" />
+      <xs:field xpath="mstns:possibleanswerid" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

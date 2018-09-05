@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<!-- Basic Page Needs
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta charset="utf-8">
+	<title>Meal Satisfaction Survey</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+
+	<!-- Boostrap ––––––––––––––––––––––––––––––––––––––– Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<!-- Need these for dropdowns in nav, amoung other things -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<!-- Fontawesome –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+	<!-- CSS –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+
+	<!-- Favicon –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="icon" type="image/png" href="img/favicon.png">
+
+</head>
+<body>
+
+	<header>
+		<nav>
+			<ul>
+				<li><a href="dashboard.html"><img src="img/chLogo_transparent_icon.png" alt="Covenant Health Logo">Covenant Health Meal Satisfaction System</a></li>
+				<li><a href="reporting.html">Reports</a></li>
+				<li>Surveys <i class="fas fa-angle-down"></i>
+					<ul>
+						<li><a href="access_codes.html">View Survey Access Codes</a></li>
+						<li><a href="view_surveys.html">View Surveys</a></li>
+						<li><a href="contact_request_list.html">View Contact Requests</a></li>
+					</ul>
+				</li>
+				<li>Administration <i class="fas fa-angle-down"></i>
+					<ul>
+						<li><a href="add_account.html">Create Account</a></li>
+						<li><a href="search_account.html">Update or Delete Account</a></li>
+						<li><a href="manage_units.html">Manage Unit Lists</a></li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="stick-right">
+				<li>Welcome Linda! <i class="fas fa-user"></i> <i class="fas fa-angle-down"></i>
+					<ul>
+						<li><a href="my_account.html">My Account</a></li>
+						<li class="separate-top"><a href="index.html">Log Out</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</header>
+
+	<main>
+		<h2>Account Search</h2>
+		<div class="row">
+			<div class="col-sm-4">
+				<input type="text" name="keyword" class="form-control search-bar" placeholder="Enter search text here">
+			</div>
+			<div class="col-sm-5">
+				<a href="#" class="button-info">Search</a>
+			</div>
+		</div>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">Username</th>
+					<th scope="col">Full Name</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>lindachowturner</td>
+					<td>Linda Chow-Turner</td>
+					<td><a href="update_account.html">Update Account</a></td>
+				</tr>
+				<tr>
+					<td>janedoe</td>
+					<td>Jane Doe</td>
+					<td><a href="update_account.html">Update Account</a></td>
+				</tr>
+				<tr>
+					<td>jackmacdonald</td>
+					<td>Jack MacDonald</td>
+					<td><a href="update_account.html">Update Account</a></td>
+				</tr>
+				<tr>
+					<td>emmathompson2</td>
+					<td>Emma Thompson</td>
+					<td><a href="update_account.html">Update Account</a></td>
+				</tr>
+				<tr>
+					<td>henryellis</td>
+					<td>Henry Ellis</td>
+					<td><a href="update_account.html">Update Account</a></td>
+				</tr>
+				<tr>
+					<td>rebekahdolman</td>
+					<td>Rebekah Dolman</td>
+					<td><a href="update_account.html">Update Account</a></td>
+				</tr>
+				<tr>
+					<td>martinmcphee</td>
+					<td>Martin McPhee</td>
+					<td><a href="update_account.html">Update Account</a></td>
+				</tr>
+				<tr>
+					<td>markletestu</td>
+					<td>Mark Letestu</td>
+					<td><a href="update_account.html">Update Account</a></td>
+				</tr>
+				<tr>
+					<td>daniellebutler3</td>
+					<td>Danielle Butler</td>
+					<td><a href="update_account.html">Update Account</a></td>
+				</tr>
+				<tr>
+					<td>katealexander</td>
+					<td>Kate Alexander</td>
+					<td><a href="update_account.html">Update Account</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+
+	<footer>
+		<p>&copy; Covenant Health 2018</p>
+	</footer>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

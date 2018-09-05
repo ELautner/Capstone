@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="TrendsDataSet" targetNamespace="http://tempuri.org/TrendsDataSet.xsd" xmlns:mstns="http://tempuri.org/TrendsDataSet.xsd" xmlns="http://tempuri.org/TrendsDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="MSSDB" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="MSSDB (Web.config)" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.MSSDB.ConnectionString" Provider="Npgsql" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="trendsdataTableAdapter" GeneratorDataComponentClassName="trendsdataTableAdapter" Name="trendsdata" UserDataComponentName="trendsdataTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="MSSDB (Web.config)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT surveyquestion.question, possibleanswer.possibleanswertext, surveyanswer.possibleanswerid, survey."date"
+FROM     survey LEFT OUTER JOIN
+                  surveyanswer ON surveyanswer.surveyid = survey.surveyid LEFT OUTER JOIN
+                  possibleanswer ON surveyanswer.possibleanswerid = possibleanswer.possibleanswerid RIGHT OUTER JOIN
+                  surveyquestion ON possibleanswer.surveyquestionid = surveyquestion.surveyquestionid
+WHERE  (surveyquestion.surveyquestionid = 1)
+GROUP BY surveyquestion.question, surveyanswer.possibleanswerid, possibleanswer.possibleanswerid, surveyanswer.surveyid, survey."date"
+ORDER BY possibleanswer.possibleanswerid</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="date" DataSetColumn="date" />
+              <Mapping SourceColumn="possibleanswerid" DataSetColumn="possibleanswerid" />
+              <Mapping SourceColumn="possibleanswertext" DataSetColumn="possibleanswertext" />
+              <Mapping SourceColumn="question" DataSetColumn="question" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="TrendsDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="False" msprop:Generator_DataSetName="TrendsDataSet" msprop:Generator_UserDSName="TrendsDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="trendsdata" msprop:Generator_TableClassName="trendsdataDataTable" msprop:Generator_TableVarName="tabletrendsdata" msprop:Generator_RowChangedName="trendsdataRowChanged" msprop:Generator_TablePropName="trendsdata" msprop:Generator_RowDeletingName="trendsdataRowDeleting" msprop:Generator_RowChangingName="trendsdataRowChanging" msprop:Generator_RowEvHandlerName="trendsdataRowChangeEventHandler" msprop:Generator_RowDeletedName="trendsdataRowDeleted" msprop:Generator_RowClassName="trendsdataRow" msprop:Generator_UserTableName="trendsdata" msprop:Generator_RowEvArgName="trendsdataRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="date" msprop:Generator_ColumnVarNameInTable="columndate" msprop:Generator_ColumnPropNameInRow="date" msprop:Generator_ColumnPropNameInTable="dateColumn" msprop:Generator_UserColumnName="date" type="xs:dateTime" />
+              <xs:element name="possibleanswerid" msprop:Generator_ColumnVarNameInTable="columnpossibleanswerid" msprop:Generator_ColumnPropNameInRow="possibleanswerid" msprop:Generator_ColumnPropNameInTable="possibleansweridColumn" msprop:Generator_UserColumnName="possibleanswerid" type="xs:int" />
+              <xs:element name="possibleanswertext" msprop:Generator_ColumnVarNameInTable="columnpossibleanswertext" msprop:Generator_ColumnPropNameInRow="possibleanswertext" msprop:Generator_ColumnPropNameInTable="possibleanswertextColumn" msprop:Generator_UserColumnName="possibleanswertext" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="250" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="question" msprop:Generator_ColumnVarNameInTable="columnquestion" msprop:Generator_ColumnPropNameInRow="question" msprop:Generator_ColumnPropNameInTable="questionColumn" msprop:Generator_UserColumnName="question">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="250" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:trendsdata" />
+      <xs:field xpath="mstns:possibleanswerid" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

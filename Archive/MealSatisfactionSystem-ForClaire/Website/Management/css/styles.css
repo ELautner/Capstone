@@ -1,0 +1,509 @@
+﻿/* ALL PAGES ---------------------------------------------------------------------------- ALL PAGES */
+body{
+    min-height: calc(100% - 30px);
+}
+
+main{
+	margin: 3.125em auto;
+	width: 1000px;
+}
+
+h2{
+    padding-bottom: 30px;
+}
+
+h3{
+    font-weight: normal;
+}
+
+
+.right-text{
+	text-align: right;
+}
+.centre-text{
+	text-align: center;
+}
+
+.bold{
+	font-weight: bold;
+}
+
+.indent-1{ /*CCC: delete me?*/
+	text-indent: 20px;
+}
+.indent-2{ /*CCC: delete me?*/
+	text-indent: 40px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* NAV BAR ---------------------------------------------- NAV BAR */
+nav{
+	background-color: #e0f9ff;
+	height: 70px;
+}
+
+nav ul{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	font-size: 18px;
+}
+
+nav ul li{
+	float: left;
+	margin-left: 15px;
+	line-height: 70px;
+}
+nav ul li:first-child{
+	font-weight: 500;
+}
+
+nav img{ /* For the logo */
+	margin-right: 10px;
+	vertical-align: text-bottom;
+}
+
+nav a, nav a:link, nav a:visited, nav a:active, nav li{
+	text-decoration: none;
+	/*color: #0571ce;*/
+	color: #636363;
+}
+nav a:hover, nav li:hover{
+	/*color: #000000;*/
+	color: #0571ce;
+	text-decoration: none;
+}
+
+/* DROPDOWN NAV ------------------------------------ DROPDOWN NAV */
+nav ul ul{
+  display: none;
+  position: absolute;
+  background-color: #ededed;
+  margin: 0;
+  margin-left: -10px;
+  margin-top: -20px;
+  min-width: 200px;
+}
+nav li:hover ul{
+  display: block;
+}
+nav ul ul li{
+  float: none;
+  line-height: 1.0;
+  margin: 0;
+  padding: 10px;
+}
+nav ul ul li:first-child{
+	font-weight: normal;
+}
+
+li.separate-top{
+	width: 100%;
+	border-top: 1px solid #cccccc;
+}
+
+/* USER INFO ------------------------------------------ USER INFO */
+ul.stick-right{
+	float: right;
+}
+ul.stick-right li{
+	margin-right: 25px;
+}
+ul.stick-right a{
+	font-weight: normal;
+}
+/* END NAV SECTION ----------------------------------- END NAV SECTION */
+
+/* BUTTONS ---------------------------------------------- BUTTONS */
+.button{
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	border-radius: 0.25rem;
+	color: #ffffff;
+}
+.button:hover{
+	text-decoration: none;
+	color: #ffffff;
+}
+.button:focus{
+	box-shadow: 0 0 0 0.2rem rgba(0,0,0,.2);
+}
+
+/* FORMS -------------------------------------------------- FORMS */
+.account-form{
+	width: 35em;
+	margin: 0 auto;
+}
+
+/* CHECKBOXES ---------------------------------------- CHECKBOXES */
+.first-checkbox{
+    padding-left: 15px; /*CCC: delete me maybe?*/
+}
+.asp-checkboxes{
+    padding-top: 7px;
+}
+
+.checkbox-space label{
+    margin-left: 10px;
+}
+
+/* TABLES ------------------------------------------------ TABLES */
+table tr th {
+	background-color: #C0C0C0;
+}
+
+/* SCROLLING TABLE ------------------------------- SCROLLING TABLE */
+.row table{
+	width: 200px;
+}
+
+table.scroll{
+	width: 200px;
+}
+table.scroll tbody, table.scroll thead tr{
+	display: block;
+}
+table.scroll tbody{
+	height: 550px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+table.scroll tbody td, table.scroll thead th{
+	width: 200px;
+}
+
+/* MESSAGE USER CONTROLLER ------------------------------------------------ MESSAGE USER CONTROLLER */
+.muc{
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.muc-title{
+    font-weight: 700;
+    /*font-size: 20px;*/
+}
+
+.muc-danger{
+    border: solid #CE050E 1px;
+    /*background: #F9DDDF;*/
+    background: rgba(206, 5, 14, 0.13);
+}
+
+.muc-success{
+    border: solid #83BC01 1px;
+    /*background: #D7E9AC;*/
+    background: rgba(131, 188, 1, 0.13);
+}
+
+.muc-info{
+    border: solid #08A9CE 1px;
+    /*background: #DDF4F9;*/
+    background: rgba(8, 169, 206, 0.13);
+}
+
+.muc-warning{
+    border: solid #FF9E1A 1px;
+    background: rgba(255, 158, 26, 0.13);
+    /*background: #FFEACF;*/
+}
+
+/* DEFAULT COLOURS ------------------------------- DEFAULT COLOURS */
+/* Changing bootstrap's colours to match Covenant Health's */
+
+/* INFO: Used for searching and general info tools*/
+.button-info{
+	background-color: #08a9ce;
+	border-color: #08a9ce;	
+}
+.button-info:hover, .button-info:active, .button-info:focus{
+	background-color: #45BEDA;
+	border-color: #45BEDA;
+}
+.border-info{
+	border-color: #08a9ce!important;
+}
+.text-info{
+	color: #08a9ce!important;
+}
+
+/* PRIMARY: Used for Updating and other basic functions */
+.button-primary{
+	background-color: #0571ce;
+	border-color: #0571ce;	
+}
+.button-primary:hover, .button-primary:active, .button-primary:focus{
+	background-color: #4394DA;
+	border-color: #4394DA;
+}
+.border-primary{
+	border-color: #0571ce!important;
+}
+.text-primary{
+	color: #0571ce!important;
+}
+
+/* SECONDARY: It's the random button. It's purple and beautiful :) */
+.button-secondary{
+	background-color: #8a84d6;
+	border-color: #8a84d6;	
+}
+.button-secondary:hover, .button-secondary:active, .button-secondary:focus{
+	background-color: #A7A2E0;
+	border-color: #A7A2E0;
+}
+.border-secondary{
+	border-color: #8a84d6!important;
+}
+.text-secondary{
+	color: #8a84d6!important;
+}
+
+
+/* SUCCESS: Used for adding and creating */
+.button-success{
+	background-color: #83bc01;
+	border-color: #83bc01;	
+}
+.button-success:hover, .button-success:active, .button-success:focus{
+	background-color: #A2CC40;
+	border-color: #A2CC40;
+}
+.border-success{
+	border-color: #83bc01!important;
+}
+.text-success{
+	color: #83bc01!important;
+}
+
+/* WARNING: Used for messages to user that include important information */
+.button-warning{
+	background-color: #ff9e1a;
+	border-color: #ff9e1a;	
+}
+.button-warning:hover, .button-warning:active, .button-warning:focus{
+	background-color: #FFB653;
+	border-color: #FFB653;
+}
+.border-warning{
+	border-color: #ff9e1a!important;
+}
+.text-warning{
+	color: #ff9e1a!important;
+}
+
+/* DANGER: Used for delete buttons and error messages */
+/* NOTE: not a CH colour, created from a pallet to match other colours */
+.button-danger{
+	background-color: #CE050E;
+	border-color: #CE050E;	
+}
+.button-danger:hover, .button-danger:active, .button-danger:focus{
+	background-color: #DA434A;
+	border-color: #DA434A;
+}
+.border-danger{
+	border-color: #CE050E!important;
+}
+.text-danger{
+	color: #CE050E!important;
+}
+
+/* PLAIN: Used for clearing and cancelling */
+/* NOTE: not a CH colour, created from a pallet to match other colours */
+.button-plain{
+	background-color: #999999;
+	border-color: #999999;	
+}
+.button-plain:hover, .button-plain:active, .button-plain:focus{
+	background-color: #B1B1B1;
+	border-color: #B1B1B1;
+}
+.border-plain{
+	border-color: #999999!important;
+}
+.text-plain{
+	color: #999999!important;
+}
+
+
+
+/*
+
+.btn-info{
+	background-color: #08a9ce;
+	border-color: #08a9ce;	
+}
+.btn-info:hover, .btn-info:active, .btn-info:focus{
+	background-color: #45BEDA;
+	border-color: #45BEDA;
+}
+.border-info{
+	border-color: #08a9ce!important;
+}
+.text-info{
+	color: #08a9ce!important;
+}
+
+.btn-primary{
+	background-color: #0571ce;
+	border-color: #0571ce;	
+}
+.btn-primary:hover{
+	background-color: #4394DA;
+	border-color: #4394DA;
+}
+.border-primary{
+	border-color: #0571ce!important;
+}
+.text-primary{
+	color: #0571ce!important;
+}
+
+.btn-secondary{
+	background-color: #8a84d6;
+	border-color: #8a84d6;	
+}
+.btn-secondary:hover{
+	background-color: #A7A2E0;
+	border-color: #A7A2E0;
+}
+.border-secondary{
+	border-color: #8a84d6!important;
+}
+.text-secondary{
+	color: #8a84d6!important;
+}
+
+
+.btn-success{
+	background-color: #83bc01;
+	border-color: #83bc01;	
+}
+.btn-success:hover{
+	background-color: #A2CC40;
+	border-color: #A2CC40;
+}
+.border-success{
+	border-color: #83bc01!important;
+}
+.text-success{
+	color: #83bc01!important;
+}
+
+
+.btn-danger{
+	background-color: #ff9e1a;
+	border-color: #ff9e1a;	
+}
+.btn-danger:hover{
+	background-color: #FFB653;
+	border-color: #FFB653;
+}
+.border-danger{
+	border-color: #ff9e1a!important;
+}
+.text-danger{
+	color: #ff9e1a!important;
+}
+
+*/
+
+
+/* FOOTER -------------------------------------------------- FOOTER */
+footer{
+	/*position: fixed;*/
+	/*bottom: 0px;*/
+	background-color: #e0f9ff;
+	width: 100%;
+    height: 30px;
+}
+footer p{
+	text-align: center;
+	margin-bottom: 0.313em;
+    line-height: 30px;
+    padding: 0;
+    margin: 0;
+}
+
+/* END: ALL PAGES -------------------------------------------------------------------- END: ALL PAGES */
+
+
+/* Login Page ---------------------------------------------------------------------------- Login Page */
+.login-form{
+	width: 30em;
+	margin: 0 auto;
+}
+/*.login-form button, .login-form input{*/
+.login-form .btn{
+	margin-top: 1.25em;
+}
+
+/* Landing Page ------------------------------------------------------------------------- Landing Page */
+div.landing-row{
+	margin-top: 40px;
+}
+
+ul.landing-nav{
+	list-style-type: none;
+	padding: 0;
+}
+
+.access-code{
+    display: block;
+	font-weight: bold;
+    text-align: center;
+}
+
+/* Contact Requests Page ---------------------------------------------------------- Contact Requests Page */
+table.contact-req tr td:first-child{ /* centering the checkboxes in the table */
+	text-align: center;
+}
+
+/* Survey Details Page -------------------------------------------------------------- Survey Details Page */
+.form-group p{
+	font-weight: bold; /*So the data appears bold in the table thingy*/
+}
+
+.question-answer{
+    font-weight: bold;
+    padding-left: 30px;
+    display: block;
+    margin-bottom: 15px;
+}
+
+/* Manage Access Codes Page ------------------------------------------------- Manage Access Codes Page */
+.access-code-list{
+
+}
+
+ul.access-code-letter-list{
+    list-style-type: none;
+    padding: 0;
+}
+
+ul.access-code-letter-list li{
+    float: left;
+    padding: 10px 0;
+}
+ul.access-code-letter-list li a{
+    padding: 10px;
+}
+
+/* Everyone's favorite: clearfix! */
+.clearfix {
+	overflow: auto;
+}
+.clearfix::after {
+	content: "";
+	clear: both;
+	display: table;
+}

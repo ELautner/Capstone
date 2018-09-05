@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<!-- Basic Page Needs
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta charset="utf-8">
+	<title>Meal Satisfaction Survey</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+
+	<!-- Boostrap ––––––––––––––––––––––––––––––––––––––– Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<!-- Need these for dropdowns in nav, amoung other things -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<!-- Fontawesome –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+	<!-- CSS –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<!--<link rel="stylesheet" type="text/css" href="css/skeleton.css"> -->
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+
+	<!-- Favicon –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="icon" type="image/png" href="img/favicon.png">
+
+</head>
+<body>
+
+	<header>
+		<nav>
+			<ul>
+				<li><a href="dashboard.html"><img src="img/chLogo_transparent_icon.png" alt="Covenant Health Logo">Covenant Health Meal Satisfaction System</a></li>
+				<li><a href="reporting.html">Reports</a></li>
+				<li>Surveys <i class="fas fa-angle-down"></i>
+					<ul>
+						<li><a href="access_codes.html">View Survey Access Codes</a></li>
+						<li><a href="view_surveys.html">View Surveys</a></li>
+						<li><a href="contact_request_list.html">View Contact Requests</a></li>
+					</ul>
+				</li>
+				<li>Administration <i class="fas fa-angle-down"></i>
+					<ul>
+						<li><a href="add_account.html">Create Account</a></li>
+						<li><a href="search_account.html">Update or Delete Account</a></li>
+						<li><a href="manage_units.html">Manage Unit Lists</a></li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="stick-right">
+				<li>Welcome Linda! <i class="fas fa-user"></i> <i class="fas fa-angle-down"></i>
+					<ul>
+						<li><a href="my_account.html">My Account</a></li>
+						<li class="separate-top"><a href="index.html">Log Out</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</header>
+
+	<main>
+		<h2>Survey Details</h2>
+
+		<div class="form-group row">
+			<!-- I've gone with <p> tags for the data, but this can easily be changed. -->
+			<label class="col-sm-2 col-form-label right-text">Survey ID</label>
+			<p class="col-sm-2 col-form-label">4539</p>
+		</div>
+
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label right-text">Date Taken</label>
+			<p class="col-sm-2 col-form-label">01/JAN/2018</p>
+
+			<label class="col-sm-2 col-form-label right-text">Care Site</label>
+			<p class="col-sm-2 col-form-label">Misericordia</p>
+
+			<label class="col-sm-2 col-form-label right-text">Unit</label>
+			<p class="col-sm-2 col-form-label">6 East</p>
+		</div>
+
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label right-text">Respondent Type</label>
+			<p class="col-sm-2 col-form-label">Patient</p>
+		</div>
+
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label right-text">Age Range</label>
+			<p class="col-sm-2 col-form-label">25 - 44</p>
+
+			<label class="col-sm-2 col-form-label right-text">Gender</label>
+			<p class="col-sm-2 col-form-label">Female</p>
+		</div>
+
+		<div class="card card-secondary">
+			<div class="card-header">Contact Information</div>
+			<div class="card-body">
+				<div class="alert alert-info alert-dismissible fade show" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+					<strong>Note:</strong> This is a super rough draft, still working on the layout of the contact section
+				</div>
+				<div class="row">
+					<p class="col-sm-2">Name: Jackie Brown</p>
+					<p class="col-sm-2">Bed: 2</p>
+					<p class="col-sm-2">Phone Number: 780-453-2353</p>
+				</div>
+				
+			</div>
+		</div>
+
+		<br><br>
+		<h3>Question Responses</h3>
+		<ol>
+			<li>
+				During this hospital stay, how would you describe the following features of your meals?
+				<ol type="a">
+					<li>
+						The variety of food in your daily meals
+						<p class="indent-1 bold">3 - Fair</p>
+					</li>
+					<li>
+						The taste and flavour of your meals
+						<p class="indent-1 bold">4 - Good</p>
+					</li>
+					<li>
+						The temperature of your hot food
+						<p class="indent-1 bold">4 - Good</p>
+					</li>
+					<li>
+						The overall appearance of your meal
+						<p class="indent-1 bold">4 - Good</p>
+					</li>
+					<li>
+						The helpfulness of the staff who deliver your meals
+						<p class="indent-1 bold">5 - Very Good</p>
+					</li>
+				</ol>
+			</li>
+
+			<li>
+				How satisfied are you with the portion sizes of your meals?
+				<p class="indent-1 bold">1 - Portion sizes are too small</p>
+			</li>
+
+			<li>
+				Do your meals take into account your specific diet requirements?
+				<p class="indent-1 bold">5 - Always</p>
+			</li>
+
+			<li>
+				Overall, how would you rate your meal experience?
+				<p class="indent-1 bold">5 - Very Good</p>
+			</li>
+
+			<li>
+				Is there anything else you would like to share about your meal experience?
+				<p class="indent-1 bold">I loved your chicken pot pies! I could have them every day. Also, your staff is so friendly, keep up the good work!</p>
+			</li>
+		</ol>
+	</main>
+
+	<footer>
+		<p>&copy; Covenant Health 2018</p>
+	</footer>
+</body>
+</html>
+
+		<!-- Not sure if an ordered list is the right way to go. Keep for now....
+		<ol>
+			<li>
+				During this hospital stay, how would you describe the following features of your meals?
+				<ol type="a">
+					<li>The variety of food in your daily meals</li>
+					<li>The taste and flavour of your meals</li>
+					<li>The temperature of your hot food</li>
+					<li>The overall appearance of your meal</li>
+					<li>The helpfulness of the staff who deliver your meals</li>
+				</ol>
+			</li>
+			<li>How satisfied are you with the portion sizes of your meals?</li>
+			<li>Do your meals take into account your specific diet requirements?</li>
+			<li>Overall, how would you rate your meal experience?</li>
+			<li>Is there anything else you would like to share about your meal experience?</li>
+		</ol> -->

@@ -1,0 +1,50 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="SurveyMasterPage.master.cs" Inherits="Survey_SurveyMasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8"/>
+    <title>Covenant Health &#124; <%: Page.Title %></title>
+    
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+
+    <%---- Mobile-Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– --%> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <%-- Stylesheets 
+    –––––––––––––––––––––––––––––––––––––––––––––––––– --%>
+    <link rel="stylesheet" href="css/normalize.css"/>
+    <link rel="stylesheet" href="css/skeleton.css"/>
+    <link rel="stylesheet" href="css/styles.css"/>
+
+    <%-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– --%>
+    <link rel="icon" type="image/png" href="img/favicon.ico"/>
+</head>
+    <body>
+        <div class="container">
+            <header class="row">
+              <div class="six columns">
+                 <img src="img/logo.png" alt="Covenant Health company logo"/>
+              </div>
+              <div class="six columns dkBlTxt">
+                <h1>Meal Satisfaction Survey</h1>
+              </div>
+            </header>
+
+            <main class="row ltBlue">
+                <asp:ContentPlaceHolder id="Main" runat="server">
+        
+                </asp:ContentPlaceHolder>
+            </main>
+
+            <footer class="row bkgDkBlue ltBlTxt">
+              <div class="six columns"><p>&trade; ODev 2018</p></div>
+              <div class="six columns"><p>&copy; Covenant Health 2018</p></div>
+            </footer>
+        </div>   
+    </body>
+</html>

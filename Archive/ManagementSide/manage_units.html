@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<!-- Basic Page Needs
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta charset="utf-8">
+	<title>Meal Satisfaction Survey</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+
+	<!-- Boostrap ––––––––––––––––––––––––––––––––––––––– Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<!-- Need these for dropdowns in nav, amoung other things -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<!-- Fontawesome –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+	<!-- CSS –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<!-- <link rel="stylesheet" type="text/css" href="css/skeleton.css">  CCC: This breaks the fonts and stuff --> 
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+
+	<!-- Favicon –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="icon" type="image/png" href="img/favicon.png">
+
+</head>
+<body>
+
+	<header>
+		<nav>
+			<ul>
+				<li><a href="dashboard.html"><img src="img/chLogo_transparent_icon.png" alt="Covenant Health Logo">Covenant Health Meal Satisfaction System</a></li>
+				<li><a href="reporting.html">Reports</a></li>
+				<li>Surveys <i class="fas fa-angle-down"></i>
+					<ul>
+						<li><a href="access_codes.html">View Survey Access Codes</a></li>
+						<li><a href="view_surveys.html">View Surveys</a></li>
+						<li><a href="contact_request_list.html">View Contact Requests</a></li>
+					</ul>
+				</li>
+				<li>Administration <i class="fas fa-angle-down"></i>
+					<ul>
+						<li><a href="add_account.html">Create Account</a></li>
+						<li><a href="search_account.html">Update or Delete Account</a></li>
+						<li><a href="manage_units.html">Manage Unit Lists</a></li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="stick-right">
+				<li>Welcome Linda! <i class="fas fa-user"></i> <i class="fas fa-angle-down"></i>
+					<ul>
+						<li><a href="my_account.html">My Account</a></li>
+						<li class="separate-top"><a href="index.html">Log Out</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</header>
+
+	<main>
+		<h2>Manage Unit Lists</h2>
+
+		<div class="form-group row">
+			<label for="careSite" class="col-sm-4 col-form-label right-text">Select a Care Site</label>
+			<div class="col-sm-4">
+				<select class="form-control">
+					<option value="none">Select...</option>
+					<option value="all">All Care Sites</option>
+					<option value="mis">Misericordia Community Hospital</option>
+					<option value="2">Another Hospital</option>
+					<option value="3">One More Hospital</option>
+				</select>
+			</div>
+			<a href="#" class="button-info col-sm-2">Retrieve Unit List</a>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-3"> <!-- Left column (unit list table) -->
+				<table class="table table-striped scroll">
+					<thead>
+						<tr>
+							<th scope="col">Unit Name</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="">8 East</a></td>
+						</tr>
+						<tr>
+							<td><a href="">7 East</a></td>
+						</tr>
+						<tr>
+							<td><a href="">7 West</a></td>
+						</tr>
+						<tr>
+							<td><a href="">6 East</a></td>
+						</tr>
+						<tr>
+							<td><a href="">6 West</a></td>
+						</tr>
+						<tr>
+							<td><a href="">5 East</a></td>
+						</tr>
+						<tr>
+							<td><a href="">5 West</a></td>
+						</tr>
+						<tr>
+							<td><a href="">3 East</a></td>
+						</tr>
+						<tr>
+							<td><a href="">3 North</a></td>
+						</tr>
+						<tr>
+							<td><a href="">ED</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div> <!-- end left column (unit list table) -->
+			<div class="col-sm-9"> <!-- Right column (add and update functionality) -->
+
+				<div class="card border-primary">
+					<div class="card-body">
+						<h3>Update Unit</h3>
+						<p class="text-muted">Select a unit from the table on the left</p>
+						<div class="form-group row">
+							<label for="unitName" class="col-sm-2 col-form-label right-text">Unit Name</label>
+							<div class="col-sm-4">
+								<input id="unitName" name="newUnitName" class="form-control" type="text">
+							</div>
+							<a href="#" class="button-primary col-sm-3">Update Unit</a>	
+						</div>
+					</div>
+				</div>
+
+				<br>
+				<div class="card border-danger">
+					<div class="card-body">
+						<h3>Deactivate Unit</h3>
+						<p class="text-muted">Select a unit from the table on the left</p>
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label right-text">Unit Name</label>
+							<label name="deleteUnitName" class="col-form-label col-sm-4 bold">7 East</label>
+							<a href="#" class="button-danger col-sm-3">Deactivate Unit</a>	
+						</div>
+					</div>
+				</div>
+					
+				<br>
+				<div class="card border-success">
+					<div class="card-body">
+						<h3>Add New Unit</h3>
+						<div class="form-group row">
+							<label for="newUnitName" class="col-sm-2 col-form-label right-text">Unit Name</label>
+							<div class="col-sm-4">
+								<input id="newUnitName" name="newUnitName" class="form-control" type="text">
+							</div>
+							<a href="#" class="button-success col-sm-3">Add Unit</a>
+						</div>
+					</div>
+				</div>
+			</div><!--  End right column (add and update functionality) -->
+		</div>	<!-- End big "row" container -->	
+	</main> 
+
+<!-- <option value="8E">8 East</option>
+					<option value="7E">7 East</option>
+					<option value="7W">7 West</option>
+					<option value="6E">6 East</option>
+					<option value="6W">6 West</option>
+					<option value="5E">5 East</option>
+					<option value="5W">5 West</option>
+					<option value="3E">3 East</option>
+					<option value="3N">3 North</option>
+					<option value="ED">ED</option> -->
+
+	<footer>
+		<p>&copy; Covenant Health 2018</p>
+	</footer>
+</body>
+</html>
